@@ -1,6 +1,19 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Roboto } from 'next/font/google';
+import Providers from "./providers"
 import "./globals.css";
+
+const roboto = Roboto({ 
+  subsets: ['latin'],
+  
+  // 1. Specify both styles (normal and italic) for the desired weights
+  weight: ['400', '700'], 
+  style: ['normal', 'italic'],
+  
+  // 2. Define CSS variables for easy use in Tailwind or global CSS
+  variable: '--font-roboto', 
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,9 +38,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} antialiased`}
       >
+        <Providers>
         {children}
+        </Providers>
       </body>
     </html>
   );

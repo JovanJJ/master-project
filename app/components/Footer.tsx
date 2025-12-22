@@ -1,8 +1,10 @@
 import Link from "next/link";
 
 export default function Footer() {
+  
+
   return (
-    <footer className="bg-gray-800 text-gray-300 py-8">
+    <footer className="bg-gray-800 text-gray-300 py-8 mt-[56px]">
       <div className="container mx-auto px-4 text-center md:text-left grid grid-cols-1 md:grid-cols-3 gap-8">
         <div>
           <h4 className="text-2xl font-bold text-white mb-4">WorkFinder</h4>
@@ -26,7 +28,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="container mx-auto px-4 text-center mt-8 pt-8 border-t border-gray-700">
-        <p>&copy; {new Date().getFullYear()} WorkFinder Platform. All rights reserved.</p>
+        <p>&copy;  MasterHub Platforma. Sva prava zadržana.</p>
       </div>
     </footer>
   );

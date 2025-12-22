@@ -2,18 +2,18 @@ export default function HowItWorks() {
   const steps = [
     {
       id: 1,
-      title: "Post a Job or Search",
-      desc: "Describe your project needs or browse through categories to find available workers near you."
+      title: "Pretraži",
+      desc: "Pretraga se vrši pomoću dve ključne reči — grad i profesija — kako bi se brzo pronašli dostupni radnici."
     },
     {
       id: 2,
-      title: "Review Profiles",
-      desc: "Check worker credentials, read verified reviews from past clients, and compare rates."
+      title: "Pregledaj profile",
+      desc: "Proveri kvalifikacije radnika i pročitaj verifikovane recenzije prethodnih klijenata."
     },
     {
       id: 3,
-      title: "Hire & Communicate",
-      desc: "Select the best fit, communicate directly through our platform, and get the job done."
+      title: "Komuniciraj",
+      desc: "Izaberi najboljeg kandidata, komuniciraj direktno preko naše platforme i obavi posao efikasno."
     }
   ];
 
@@ -21,8 +21,8 @@ export default function HowItWorks() {
     <section className="py-16 bg-gray-100">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How WorkFinder Works</h2>
-          <p className="mt-4 text-lg text-gray-600">Getting your job done is easy. Here’s the simple process.</p>
+          <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Šta je MasterHub platforma</h2>
+          <p className="mt-4 text-lg text-gray-600">Završite vas posao efikasno sa tri jednostavna koraka:</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">

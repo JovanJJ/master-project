@@ -23,8 +23,6 @@ export default async function SearchPage({searchParams}: SearchPageProps) {
 
   const data = await fetchWorkers({p, loc, page});
   const { workers, totalItems, totalPages, currentPage } = data;
-  console.log(workers);
-  
   
     return (
         

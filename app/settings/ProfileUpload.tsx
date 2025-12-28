@@ -4,20 +4,22 @@ import { useState, useRef } from "react";
 import { uploadProfileImage } from "@/lib/actions/worker";
 import { useSession } from "next-auth/react";
 
-
 export default function ProfileUpload() {
     const [selectedImage, setSelectedImage] = useState(null)
     const [previewUrl, setPreviewUrl] = useState(null)
     const [success, setSuccess] = useState(false)
     const [error, setError] = useState(null)
     const fileInputRef = useRef(null);
+    const { update } = useSession();
     
     const { data: session, status } = useSession();
+    
     if (status === "loading") {
-    return <p>Loading...</p>;
+        return <p>Loading...</p>;
     }
     const workerId = session.user.id;
-    
+    const userImage = session.user.profileImage;
+
     const handleImageChange = (e) => {
         const file = e.target.files[0];
 
@@ -38,6 +40,9 @@ export default function ProfileUpload() {
 
     }
 
+    
+    
+
     const inputButtonClick = () => {
         fileInputRef.current?.click();
     }
@@ -50,7 +55,7 @@ export default function ProfileUpload() {
             return
         }
 
-        
+
         setError(null)
         setSuccess(false)
 
@@ -71,15 +76,18 @@ export default function ProfileUpload() {
             setSuccess(true)
             setSelectedImage(null)
             setPreviewUrl(result.imageUrl) // Update with the new image URL
+           
 
         } catch (err) {
             setError(err.message)
-        } 
+        }
+        
     }
 
     return (
         <form onSubmit={handleSubmit} className="mx-auto p-6 space-y-4">
             <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
+
             {
                 previewUrl ? (
                     <div className="w-48 h-48 mx-auto rounded-full overflow-hidden border-2 border-transparent hover:border-blue-500 transition">
@@ -87,12 +95,19 @@ export default function ProfileUpload() {
                     </div>
                 ) : (
 
-                    <div onClick={inputButtonClick} className="flex items-center justify-center bg-gray-100 border-2 border-blue-200 max-w-48 h-48 mx-auto rounded-full
+                    <div onClick={inputButtonClick} className="flex items-center overflow-hidden justify-center bg-gray-100 border-2 border-blue-200 max-w-48 h-48 mx-auto rounded-full
              cursor-pointer hover:border-blue-500 transition">
-                        <span>Izaberi sliku</span>
+                        {
+                        userImage && !previewUrl ? (<img src={userImage} alt="profile image" onClick={inputButtonClick} className="w-full h-full object-cover" />
+
+                        ):(
+                            <span>Izaberi sliku</span>
+                        )
+                    }
                     </div>
                 )
             }
+            
             {selectedImage ? (
                 <button type="submit" className="block px-3 py-2 bg-blue-500 rounded-3xl text-white w-fit mx-auto pointer hover:bg-blue-600 transition">Dodaj sliku</button>
             ) : (
@@ -108,7 +123,7 @@ export default function ProfileUpload() {
 
             {success && (
                 <div className="mb-4 p-3 bg-green-100 text-green-700 rounded">
-                    Profile picture updated successfully!
+                    Uspešno ste dodali sliku
                 </div>
             )}
         </form>

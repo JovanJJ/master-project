@@ -1,37 +1,49 @@
 'use client'
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from "next/image";
 import Simage from "../../public/settings-icon-14950.png";
 import ProfileUpload from "./ProfileUpload";
 import GeneralSettings from './GeneralSettings';
 import Auth from './Auth';
-import { fetchWorkerById } from '@/lib/actions/worker';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '../api/auth/[...nextauth]/route';
 import { useSession } from 'next-auth/react';
 import { redirect } from "next/navigation"
+import { fetchWorkerById } from '@/lib/actions/worker';
+
 
 export default function Settings() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("general");
-  //const session = await getServerSession(authOptions);
+  const [profileData, setProfileData] = useState(null);
   const { data: session, status } = useSession();
-  
-  if(status === "loading"){
-    return('')
+
+  const loadProfile = async (id) => {
+    const data = await fetchWorkerById(id);
+    setProfileData(data);
   }
-  if(!session){
-        redirect("/login");
+
+  useEffect(() => {
+    if (status === "authenticated" && session?.user?.id) {
+      loadProfile(session.user.id);
     }
-  console.log(session);
+  }, [status, session?.user?.id]);
+
+  if (status === "loading") {
+    return ('')
+  }
+  if (!session) {
+    redirect("/login");
+  }
+
   const menuItems = [
-    { id: "general", label: "Opšta podešavanja" },
+    { id: "general", label: "Profil" },
     { id: "auth", label: "e-mail i lozinka" },
     { id: "security", label: "Bezbednost" },
     { id: "notifications", label: "Obavestenja" },
     { id: "messages", label: "Poruke" },
   ];
+
+
 
   return (
     <section className="w-full min-h-screen">
@@ -68,8 +80,8 @@ export default function Settings() {
                       setMenuOpen(false);
                     }}
                     className={`cursor-pointer transition ${activeSection === item.id
-                        ? "text-blue-500 font-semibold"
-                        : "hover:text-blue-400"
+                      ? "text-blue-500 font-semibold"
+                      : "hover:text-blue-400"
                       }`}
                   >
                     {item.label}
@@ -88,11 +100,11 @@ export default function Settings() {
           >
             ☰
           </button>
-          <ProfileUpload />
+          {activeSection === 'general' && <ProfileUpload />}
 
           <div className="space-y-4 w-full px-4 pt-5">
-           {activeSection === 'general' && <GeneralSettings session={session} status={status} />}
-           {activeSection === 'auth' && <Auth />}
+            {activeSection === 'general' && <GeneralSettings session={session} status={status} profileData={profileData} reloadProfile={() => loadProfile(session.user.id)} />}
+            {activeSection === 'auth' && <Auth session={session} status={status} profileData={profileData} />}
           </div>
         </div>
       </div>

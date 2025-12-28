@@ -45,6 +45,7 @@ export const authOptions: NextAuthOptions = {
           location: worker.location,
           gender: worker.gender,
           phone: worker.phone,
+          description: worker.description,
         };
       }
     })
@@ -65,22 +66,33 @@ export const authOptions: NextAuthOptions = {
         token.location = user.location;
         token.gender = user.gender;
         token.phone = user.phone;
+        token.description = user.description;
       }
       return token;
     },
     
     async session({ session, token }) {
-      // Add token info to session
+      // Fetch fresh user data from database to ensure latest changes
       if (token) {
-        session.user.id = token.id as string;
-        session.user.email = token.email as string;
-        session.user.firstName = token.firstName as string;
-        session.user.lastName = token.lastName as string;
-        session.user.profession = token.profession as string;
-        session.user.profileImage = token.profileImage as string;
-        session.user.location = token.location as string;
-        session.user.gender = token.gender as string;
-        session.user.phone = token.phone as string;
+        try {
+          await connectDB();
+          const worker = await Worker.findById(token.id);
+          
+          if (worker) {
+            session.user.id = token.id as string;
+            session.user.email = token.email as string;
+            session.user.firstName = worker.firstName;
+            session.user.lastName = worker.lastName;
+            session.user.profession = worker.profession;
+            session.user.profileImage = worker.profileImage; // Fresh from DB
+            session.user.location = worker.location;
+            session.user.gender = worker.gender;
+            session.user.phone = worker.phone;
+            session.user.description = worker.description;
+          }
+        } catch (error) {
+          console.error('Error fetching user in session callback:', error);
+        }
       }
       return session;
     }

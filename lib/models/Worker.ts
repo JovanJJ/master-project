@@ -61,6 +61,10 @@ const WorkerSchema = new Schema({
     type: String,
     required: true,
   },
+  description: {
+    type: String,
+    required: false
+  },
   // Optional field, kept for example
   rate: {
     type: String,

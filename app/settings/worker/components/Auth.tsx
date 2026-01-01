@@ -1,6 +1,6 @@
 "use client"
 import { useState } from "react"
-import backArrow from "../../public/back-arrow.png";
+import backArrow from "../../../../public/back-arrow.png";
 import Image from "next/image";
 import { changePassword } from "@/lib/actions/worker";
 import React from "react";

@@ -23,6 +23,8 @@ export default async function SearchPage({searchParams}: SearchPageProps) {
 
   const data = await fetchWorkers({p, loc, page});
   const { workers, totalItems, totalPages, currentPage } = data;
+  const noImage = 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Placeholder_no_text.svg';
+  
   
     return (
         
@@ -33,7 +35,7 @@ export default async function SearchPage({searchParams}: SearchPageProps) {
                     <div key={worker._id} className="bg-white rounded-xl shadow-md overflow-hidden transition hover:shadow-lg">
 
                 <div className="aspect-4/3 bg-gray-200 relative">
-                    <Image src={worker.profileImage} fill  alt="123" className="w-full h-full object-cover"/>
+                    <Image src={!worker.profileImage? noImage :worker.profileImage} fill  alt="123" className="w-full h-full object-cover"/>
                 </div>
 
                 <div className="p-4 flex flex-col gap-3">

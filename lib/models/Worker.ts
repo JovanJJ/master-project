@@ -22,6 +22,10 @@ const WorkerSchema = new Schema({
     required: true,
     index: true,
   },
+  role: {
+    type: String,
+    default: "worker"
+  },
   // Date of Birth details
   birthDay: {
     type: Number,

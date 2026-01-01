@@ -9,10 +9,8 @@ import cloudinary from '@/lib/cloudinary';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import bcrypt from 'bcryptjs';
-import { unstable_cache } from "next/cache";
-import { revalidateTag } from 'next/cache';
 
-// Define results per page
+
 const ITEMS_PER_PAGE = 10;
 
 const allowedFields = [
@@ -22,14 +20,8 @@ const allowedFields = [
   "location",
   "profession",
   "description",
-]
+];
 
-/**
- * Fetches workers from the MongoDB based on search criteria and pagination.
- * * @param p - Profession search term (from URL ?p=...)
- * @param loc - Location search term (from URL ?loc=...)
- * @param page - Current page number (from URL ?page=...)
- */
 export async function fetchWorkers({ p, loc, page }: { p?: string, loc?: string, page?: string }) {
   await connectDB(); // Ensure connection is active
 
@@ -84,6 +76,7 @@ export async function createWorker(formData: FormData) {
     birthYear: formData.get('birthYear') as string,
     gender: formData.get('gender') as string,
     password: formData.get('password') as string,
+    role: formData.get("role") as string,
   };
 
   // 1. Validation
@@ -206,7 +199,7 @@ export async function uploadProfileImage(formData: FormData) {
       ).end(buffer);
     });
 
-    const imageUrl = (uploadResult as any).secure_url;
+    const imageUrl = (uploadResult).secure_url;
 
     // Update worker in database
     const updatedWorker = await Worker.findByIdAndUpdate(
@@ -301,6 +294,7 @@ export async function changeMultipleFields(prevState, formData: FormData) {
   ).lean();
 
   revalidatePath(`/profile`);
+  
   return {
     success: true,
   }
@@ -374,33 +368,9 @@ export async function fetchComments(workerId: string){
   
   
 }
-  
 
 
 
 
-{
-  /*
-export async function profileDescription(description: string, id: string){
-  const session = await getServerSession(authOptions);
 
-  if (!session) {
-    return { success: false, message: "niste ulogovani" }
-  }
-  
-  await connectDB();
 
-  const result = await Worker.findByIdAndUpdate(
-    id,
-    {description},
-    {new: true, runValidators: true}
-  );
-
-  console.log(result);
-  return(result.description);
-
-  
-  
-}
-*/
-}

@@ -2,14 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { changeMultipleFields } from "@/lib/actions/worker";
-import { useFormState } from "react-dom";
 import React from "react"
 
 export default  function  GeneralSettings({ session, status, profileData, reloadProfile }) {
     const [editingField, setEditingField] = useState<string | null>(null);
     const [clickDescription, setClickDescription] = useState(null);
     const [state, formAction] = React.useActionState(changeMultipleFields, {  success: false });
-    
+    console.log(session.user.role);
     useEffect(() => {
         if (state) {
             reloadProfile();

@@ -19,6 +19,7 @@ export default async function ProfilePage({ params }: WorkerProfilePageProps) {
     const { id } = await params;
     
     const session = await getServerSession(authOptions);
+    
     if (!session) {
         redirect("/login");
     }
@@ -32,6 +33,8 @@ export default async function ProfilePage({ params }: WorkerProfilePageProps) {
     const { _id, firstName, lastName, profession, location, birthYear, email, phone, profileImage, description } = workerData;
 
     const comments = await fetchComments(_id);
+    console.log(profileImage);
+    const noImage = 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Placeholder_no_text.svg';
 
     return (
         <section className="w-full">
@@ -40,7 +43,7 @@ export default async function ProfilePage({ params }: WorkerProfilePageProps) {
                     <div className="w-full flex justify-center sm:justify-start pt-7">
                         <div className="w-2/3 max-w-48 aspect-square rounded-full relative border-3 border-blue-200">
                                <Image
-                                    src={profileImage}
+                                    src={profileImage === null ?noImage :profileImage}
                                     fill
                                     alt="Profile Image"
                                     className="w-full rounded-full object-cover"
@@ -326,7 +329,6 @@ export default async function ProfilePage({ params }: WorkerProfilePageProps) {
                         </div>
                     </div>
 
-
                     <div className="flex gap-3 p-3 rounded-xl border border-blue-100 bg-white hover:shadow-md transition">
 
                         <div>
@@ -357,7 +359,6 @@ export default async function ProfilePage({ params }: WorkerProfilePageProps) {
                         </div>
                     </div>
 
-
                     <div className="flex gap-3 p-3 rounded-xl border border-blue-100 bg-white hover:shadow-md transition">
 
                         <div>
@@ -387,7 +388,6 @@ export default async function ProfilePage({ params }: WorkerProfilePageProps) {
                             </button>
                         </div>
                     </div>
-
                 </aside>
             </div>
         </section>

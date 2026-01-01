@@ -1,7 +1,9 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import GoogleProvider from "next-auth/providers/google";
 import { connectDB } from '@/lib/db';
 import Worker from '@/lib/models/Worker';
+import User from '@/lib/models/User';
 import bcrypt from 'bcryptjs';
 
 export const authOptions: NextAuthOptions = {
@@ -46,67 +48,103 @@ export const authOptions: NextAuthOptions = {
           gender: worker.gender,
           phone: worker.phone,
           description: worker.description,
+          role: worker.role,
         };
       }
-    })
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!
+    }),
   ],
-  
+  pages: {
+    signIn: "/login/user",
+  },
+
 
   //layer 2 
   callbacks: {
+    async signIn({ user, account, profile }) {
+      // Only handle Google here
+      if (account?.provider !== "google") {
+        return true;
+      }
+
+      try {
+        await connectDB();
+
+        // Google unique identifier
+        const googleId = profile?.sub;
+
+        if (!googleId) {
+          console.error("No Google ID found in profile");
+          return false;
+        }
+
+        // Try to find existing user
+        let existingUser = await User.findOne({
+          $or: [
+            { googleId },
+            { email: user.email }
+          ]
+        });
+
+        // If user does not exist, create one
+        if (!existingUser) {
+          existingUser = await User.create({
+            email: user.email,
+            name: user.name,
+            image: user.image,
+            googleId,
+            role: "user",
+          });
+        } else if (!existingUser.googleId) {
+          // If user exists but doesn't have googleId, update it
+          existingUser.googleId = googleId;
+          await existingUser.save();
+        }
+
+        // Attach DB info to user object
+        user.id = existingUser._id.toString();
+        user.role = existingUser.role;
+
+        return true;
+      } catch (error) {
+        console.error("Google sign-in error:", error);
+        return false;
+      }
+    },
+
     async jwt({ token, user }) {
-      // Add user info to token
+      // Runs on sign-in AND subsequent requests
       if (user) {
         token.id = user.id;
         token.email = user.email;
-        token.firstName = user.firstName;
-        token.lastName = user.lastName;
-        token.profession = user.profession;
-        token.profileImage = user.profileImage;
-        token.location = user.location;
-        token.gender = user.gender;
-        token.phone = user.phone;
-        token.description = user.description;
+
+        // Credentials login → no role on user object
+        token.role = user.role ?? "worker";
       }
+
       return token;
     },
-    
+
     async session({ session, token }) {
-      // Fetch fresh user data from database to ensure latest changes
-      if (token) {
-        try {
-          await connectDB();
-          const worker = await Worker.findById(token.id);
-          
-          if (worker) {
-            session.user.id = token.id as string;
-            session.user.email = token.email as string;
-            session.user.firstName = worker.firstName;
-            session.user.lastName = worker.lastName;
-            session.user.profession = worker.profession;
-            session.user.profileImage = worker.profileImage; // Fresh from DB
-            session.user.location = worker.location;
-            session.user.gender = worker.gender;
-            session.user.phone = worker.phone;
-            session.user.description = worker.description;
-          }
-        } catch (error) {
-          console.error('Error fetching user in session callback:', error);
-        }
+      if (session.user) {
+        // We can safely cast here because we defined the types in step 2
+        session.user.id = token.id as string;
+        session.user.email = token.email as string;
+        session.user.role = token.role as string;
       }
       return session;
     }
   },
-  
-  pages: {
-    signIn: '/auth/login', // Custom login page
-  },
-  
+
+
   session: {
     strategy: 'jwt', // Use JWT for sessions
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
-  
+
   secret: process.env.NEXTAUTH_SECRET, // Add to .env.local
 };
 

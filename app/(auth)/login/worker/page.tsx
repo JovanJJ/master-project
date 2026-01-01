@@ -24,15 +24,14 @@ export default function LoginPage() {
       })
 
       if (result?.error) {
-        setError('Invalid email or password')
+        setError('Pogrešan email ili lozinka')
         return
       }
-
-      // Login successful
-      router.push('/settings') // Redirect to settings or dashboard
+      
+      router.push('/') 
       router.refresh()
     } catch (err) {
-      setError('Something went wrong')
+      setError('Došlo je do greške')
     } finally {
       setLoading(false)
     }
@@ -41,7 +40,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8">
-        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">Uloguj se</h2>
         
         <form onSubmit={handleSubmit}>
           {error && (
@@ -62,7 +61,7 @@ export default function LoginPage() {
           </div>
 
           <div className="mb-6">
-            <label className="block text-sm font-medium mb-2">Password</label>
+            <label className="block text-sm font-medium mb-2">Lozinka</label>
             <input
               type="password"
               value={password}

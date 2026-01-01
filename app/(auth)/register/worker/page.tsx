@@ -93,6 +93,7 @@ export default function RegisterWorker() {
                         <input type="password" name="password" placeholder="Lozinka" value={password} onChange={handlePasswordChange} required className="flex-1 p-2 border rounded focus:outline-none focus:border-blue-600 transition" />
                         <input type="password" name="confirmPassword" placeholder="Ponovite lozinku" value={confirmPassword} onChange={handleConfirmPasswordChange} required className="flex-1 p-2 border rounded focus:outline-none focus:border-blue-600 transition" />
                     </div>
+                    <input hidden name="role" defaultValue={"worker"}></input>
 
                     {passwordError && (
                         <div className="text-red-600 text-sm bg-red-50 p-2 rounded">

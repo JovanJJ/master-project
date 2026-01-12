@@ -1,6 +1,7 @@
 import User from "@/lib/models/User";
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
+import { revalidatePath } from "next/cache";
 
 export async function GET(req) {
   try {
@@ -28,8 +29,8 @@ export async function GET(req) {
     const userData = {
       id: user._id.toString(),
       email: user.email,
-      name: user.name, // not email
-      profileImage: user.image?.trim(),
+      name: user.name, 
+      profileImage: user.profileImage?.trim(),
       role: user.role,
     };
 

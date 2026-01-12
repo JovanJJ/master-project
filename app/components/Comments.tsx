@@ -8,14 +8,15 @@ export default function Comments({comments} : string) {
     
     return (
         <>
-            <div className="w-full mt-6 pl-3 shadow-2xl overflow-y-auto max-h-[300px]">   
+            <div className="w-full mt-6 pl-3  overflow-y-auto max-h-[300px]">   
                 {comments.map((comment) => {
+                    
                     return (
                         <React.Fragment key={comment.id}>
                             <div  className="border p-2 rounded-2xl border-blue-200 relative w-[97%] md:w-full shadow-xl mb-3">
                                 <div className="flex items-center gap-2">
-                                    <Image src={Globe} alt="userImage" className="w-[50px] rounded-full"></Image>
-                                    <div className="font-bold italic">{comment.user.firstName} {comment.user.lastName}</div>
+                                    <Image src={comment.author.profileImage} width={50} height={50} alt="userImage" className="w-[50px] rounded-full"></Image>
+                                    <div className="font-bold italic">{comment.author.name}</div>
                                 </div>
 
                                 <div className="mt-2 pb-2.5 text-[14px]">

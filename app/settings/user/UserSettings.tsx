@@ -14,7 +14,7 @@ export default async function UserSettings(){
 
     const res = await fetch(`http://localhost:3000/api/user/settings?id=${userId}`);
     const data = await res.json();
-    
+    console.log(data);
     
     
     
@@ -23,7 +23,7 @@ export default async function UserSettings(){
         
     
     return( 
-        <section className="flex justify-center w-full min-h-screen px-4">
+        <section className="flex justify-center w-full  px-4">
               <div className="flex flex-col w-full md:max-w-3xl p-4 border border-blue-200 rounded-xl">
                 <div className="flex w-22 justify-between text-2xl">Nalog <Image  src={userProfile} alt="image"
                 className="w-5 h-6 mt-1"/>

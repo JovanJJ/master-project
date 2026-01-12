@@ -34,23 +34,23 @@ export default  function  GeneralSettings({ session, status, profileData, reload
     return (
         <form action={formAction}>
             {current.map(([label, field, value]) => (
-                <div key={field} className="flex gap-4 space-y-4 items-center">
-                    <div className="w-24 font-medium">{label}</div>
+                <div key={field} className="flex gap-4 space-y-4 items-center justify-between">
+                    <div className="w-1/3 font-medium">{label}</div>
 
                     {editingField === field ? (
                         <input
                             defaultValue={value}
-                            className="w-full sm:max-w-36 border outline-none border-blue-400 rounded p-2"
+                            className="  border outline-none border-blue-400 rounded p-2"
                             name={field}
                         />
                     ) : (
-                        <div className="w-full sm:max-w-36 underline">
+                        <div className="w-1/3 sm:max-w-36 underline">
                             {value}
                         </div>
                     )}
 
                     <button
-                        className="text-sm underline cursor-pointer"
+                        className="text-sm w-1/3 underline cursor-pointer mb-4"
                         onClick={() => setEditingField(editingField === field ? null : field)}
                         type="button"
                     >

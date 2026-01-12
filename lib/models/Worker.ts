@@ -26,12 +26,15 @@ const WorkerSchema = new Schema({
     type: String,
     default: "worker"
   },
-  // Date of Birth details
   birthDay: {
     type: Number,
     min: 1,
     max: 31,
   },
+  passwordResetToken: String,
+
+  passwordResetExpires: Date,
+
   birthMonth: {
     type: Number,
     min: 1,

@@ -6,12 +6,18 @@ const CommentSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         index: true,
-        ref: "Worker",
+       
     },
-    userId: {
+    authorId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         index: true,
+        refPath: "authorModel",
+    },
+     authorModel: {
+      type: String,
+      required: true,
+      enum: ["User", "Worker"],
     },
     text: {
         type: String,

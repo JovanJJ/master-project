@@ -12,13 +12,13 @@ export default async function Settings() {
   if (!session) {
     redirect("login/user");
   }
-  
-  if (session?.user?.role === "user") {
-    return <UserSettings />;
-  }
+ 
 
-  if (session?.user?.role === "worker") {
-    return <WorkerSettings />;
-  }
+  return (
+    <section className="w-full h-full py-10 md:py-17">
+      {session?.user?.role === "user" && <UserSettings />}
+      {session?.user?.role === "worker" && <WorkerSettings />}
+    </section>
+  );
   
 }

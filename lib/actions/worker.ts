@@ -11,7 +11,7 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import bcrypt from 'bcryptjs';
 
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 6;
 
 const allowedFields = [
   "firstName",
@@ -23,35 +23,33 @@ const allowedFields = [
 ];
 
 export async function fetchWorkers({ p, loc, page }: { p?: string, loc?: string, page?: string }) {
-  await connectDB(); // Ensure connection is active
+  await connectDB();
 
   try {
     const currentPage = Number(page) || 1;
-    const skipCount = (currentPage - 1) * ITEMS_PER_PAGE;
+    const skipCount = (currentPage - 1) * 6;
 
-    // 1. Construct the query filter
     const filter: any = {};
 
-    // Case-insensitive search using Regex (best for partial matches)
-    if (p) {
-      filter.profession = { $regex: p, $options: 'i' };
-    }
-    if (loc) {
-      filter.location = { $regex: loc, $options: 'i' };
+    if (p !== "all") {
+      filter.profession = p;
     }
 
-    // 2. Execute the query with pagination
+    if (loc !== "all") {
+      filter.location = loc;
+    }
+
     const workers = await Worker.find(filter)
       .skip(skipCount)
-      .limit(ITEMS_PER_PAGE)
-      .lean(); // .lean() returns plain JavaScript objects, improving performance
+      .limit(6)
+      .lean();
 
-    // 3. Get the total count for pagination metadata
+
     const totalItems = await Worker.countDocuments(filter);
     const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
 
     return {
-      workers: JSON.parse(JSON.stringify(workers)), // Serialize Mongoose objects for Next.js Server Components
+      workers: JSON.parse(JSON.stringify(workers)),
       totalItems,
       totalPages,
       currentPage,
@@ -138,8 +136,8 @@ export async function fetchWorkerById(id: string) {
     }
 
     // Normalize profileImage to null if it's empty/falsy
-    const normalizedProfileImage = worker.profileImage && String(worker.profileImage).trim() 
-      ? String(worker.profileImage) 
+    const normalizedProfileImage = worker.profileImage && String(worker.profileImage).trim()
+      ? String(worker.profileImage)
       : null;
 
     return {
@@ -162,7 +160,7 @@ export async function uploadProfileImage(formData: FormData) {
 
   // Validation
   if (!file) {
-    return { success: false, message: 'Niste nalepili novu fotogradiju' };
+    return { success: false, message: 'Niste nalepili novu fotografiju' };
   }
 
   if (!file.type.startsWith('image/')) {
@@ -294,7 +292,7 @@ export async function changeMultipleFields(prevState, formData: FormData) {
   ).lean();
 
   revalidatePath(`/profile`);
-  
+
   return {
     success: true,
   }
@@ -304,6 +302,16 @@ export async function changeMultipleFields(prevState, formData: FormData) {
 
 export async function addComments(formData: FormData) {
   const session = await getServerSession(authOptions);
+  let authorId;
+  let authorModel;
+
+  if (session?.user.role === "worker") {
+    authorId = session.user.id;
+    authorModel = "Worker";
+  } else {
+    authorId = session?.user.id;
+    authorModel = "User";
+  }
 
   if (!session) {
     return { success: false, message: "Unauthorized" };
@@ -321,52 +329,52 @@ export async function addComments(formData: FormData) {
   try {
     const comment = await Comment.create({
       workerId: new mongoose.Types.ObjectId(workerId),
-      userId: new mongoose.Types.ObjectId(session.user.id),
+      authorId,
+      authorModel,
       text,
     });
 
     console.log("✅ Comment created:", comment.text);
     revalidatePath(`/profile/${workerId}`);
-   
+
   } catch (err) {
     console.error("❌ Error:", err);
     return { success: false, message: "DB error" };
   }
 }
 
-export async function fetchComments(workerId: string){
+export async function fetchComments(workerId: string) {
   const session = await getServerSession(authOptions);
-  if(!session) return {success: false, message: "Unauthorized"}
+  if (!session) {
+    return { success: false, message: "Unauthorized" };
+  }
 
   await connectDB();
 
-  const comment = await Comment.find({workerId})
-  .sort({createdAt: - 1})
-  .lean()
-  .populate({
-    path: "workerId",
-    select: "firstName lastName profileImage",
-  }).lean();
+  const comments = await Comment.find({ workerId })
+    .sort({ createdAt: -1 })
+    .populate({
+      path: "authorId",
+      select: "name profileImage firstName lastName",
+    })
+    .lean();
 
-  
-  
-  return comment.map((c) => {
+  return comments.map((c: any) => {
+    const author = c.authorId;
+
     return {
       id: c._id.toString(),
       text: c.text,
       createdAt: c.createdAt.toISOString(),
-      user:{
-        userId: c.workerId._id.toString(),
-        firstName: c.workerId.firstName,
-        lastName: c.workerId.lastName,
-        profileImage: c.workerId.profileImage,
-      }
-    }
-  
-    
+      author: {
+        id: author?._id?.toString(),
+        name:
+          author?.name ||
+          `${author?.firstName ?? ""} ${author?.lastName ?? ""}`.trim(),
+        profileImage: author?.profileImage || null,
+      },
+    };
   });
-  
-  
 }
 
 

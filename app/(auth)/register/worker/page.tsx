@@ -47,7 +47,7 @@ export default function RegisterWorker() {
             if (result.success) {
                 setMessage(result.message);
                 setTimeout(() => {
-                    router.push('/'); // Redirect to home or login page
+                    router.push('/login/worker'); // Redirect to home or login page
                 }, 2000);
             } else {
                 setMessage(result.message);
@@ -64,7 +64,10 @@ export default function RegisterWorker() {
         <div className="flex w-full h-screen justify-center items-center">
             <div className="max-w-xl mx-auto">
                 <h1 className="text-center py-4 text-3xl">Registracija radnika</h1>
+                
                 <form action={createWorker} onSubmit={handleSubmit} className="space-y-4 px-5 flex flex-col">
+                    <div className=" max-w-[650px] font-bold">Tražiš više posla, bolje uslove ili pouzdane poslodavce? Master Hub je platforma koja povezuje majstore i radnike sa onima kojima su njihove veštine zaista potrebne. Registracijom dobijaš priliku da lakše pronađeš poslove, proširiš mrežu kontakata i radiš kada i gde tebi odgovara. Bez komplikacija, bez gubljenja vremena — pokaži svoje znanje i pusti da posao pronađe tebe.
+Pridruži se Master Hub-u već danas.</div>
                     <div className="flex gap-4">
                         <input name="firstName" placeholder="Ime" required className="flex-1 border rounded p-2 focus:outline-none focus:border-blue-600 transition" />
                         <input name="lastName" placeholder="Prezime" required className="flex-1 border rounded p-2 focus:outline-none focus:border-blue-600 transition" />
@@ -111,8 +114,8 @@ export default function RegisterWorker() {
                         </div>
                     )}
 
-                    <button type="submit" disabled={isLoading} className="bg-blue-600 py-2 px-4 text-white rounded-2xl hover:bg-blue-400 transition disabled:opacity-50 disabled:cursor-not-allowed">
-                        {isLoading ? 'Registrovanje u toku...' : 'Registruj'}
+                    <button type="submit" disabled={isLoading} className="bg-blue-600 py-2 px-4 cursor-pointer text-white rounded-2xl hover:bg-blue-400 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                        {isLoading ? 'Registrovanje u toku...' : 'Registruj se'}
                     </button>
 
                 </form>

@@ -2,6 +2,7 @@ import { connectDB } from "@/lib/db";
 import { NextResponse } from "next/server";
 import cloudinary from "@/lib/cloudinary";
 import User from "@/lib/models/User";
+import { revalidatePath } from "next/cache";
 
 export async function POST(req) {
     const formData = await req.formData();
@@ -27,12 +28,15 @@ export async function POST(req) {
             ).end(buffer)
         });
         const imageUrl = (uploadResult).secure_url;
+        console.log(uploadResult.secure_url);
         const data = await User.findByIdAndUpdate(
             id,
-            {image: imageUrl},
+            {profileImage: imageUrl},
             {new: true},
         ).lean();
+        revalidatePath("settings")
         return NextResponse.json({ success: true, data: data});
+        
     } catch (error) {
         return NextResponse.json({error});
     } 

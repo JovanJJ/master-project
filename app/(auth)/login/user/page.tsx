@@ -32,6 +32,8 @@ export default function GoogleLogin() {
           />
           <span>Uloguj se pomoću Google naloga</span>
         </button>
+
+        
       </form>
     </section>
   )

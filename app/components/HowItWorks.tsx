@@ -12,8 +12,8 @@ export default function HowItWorks() {
     },
     {
       id: 3,
-      title: "Komuniciraj",
-      desc: "Izaberi najboljeg kandidata, komuniciraj direktno preko naše platforme i obavi posao efikasno."
+      title: "Završi posao",
+      desc: "Izaberi najboljeg kandidata, i obavi posao efikasno."
     }
   ];
 
@@ -22,7 +22,8 @@ export default function HowItWorks() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Šta je MasterHub platforma</h2>
-          <p className="mt-4 text-lg text-gray-600">Završite vas posao efikasno sa tri jednostavna koraka:</p>
+          <p className="mt-4 text-lg text-gray-600">Iako smo na početku svog puta, naša misija je da postanemo najpouzdaniji most između onih koji nude svoje veštine i onih kojima su te veštine potrebne. Svaki profil i svaka pretraga na ovom sajtu doprinose stvaranju uređenijeg tržišta gde se kvalitet ceni, a potrebe brzo rešavaju. Pozivamo vas da budete deo rasta ove platforme – bilo da nudite usluge ili ih tražite, vi gradite sistem koji će sutra služiti svima nama.
+</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">

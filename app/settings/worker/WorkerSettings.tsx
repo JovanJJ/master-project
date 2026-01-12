@@ -9,6 +9,8 @@ import Auth from './components/Auth';
 import { useSession } from 'next-auth/react';
 import { redirect } from "next/navigation"
 import { fetchWorkerById } from '@/lib/actions/worker';
+import Notifications from './components/Notifications';
+import blueRightArrow from "../../../public/arrow-right-1.svg";
 
 export default function Settings() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -37,14 +39,12 @@ export default function Settings() {
   const menuItems = [
     { id: "general", label: "Profil" },
     { id: "auth", label: "e-mail i lozinka" },
-    { id: "security", label: "Bezbednost" },
     { id: "notifications", label: "Obavestenja" },
-    { id: "messages", label: "Poruke" },
   ];
 
   return (
-    <section className="w-full min-h-screen md:pt-7">
-      <div className="max-w-[900px] mx-auto p-4 md:p-7 md:border md:border-blue-200 rounded-2xl shadow-xl grid grid-cols-1 md:grid-cols-[31%_1fr]">
+    <section className="w-full  flex md:items-center justify-center">
+      <div className="w-[900px] mx-auto p-4 md:p-7 md:border md:border-blue-200 rounded-2xl shadow-xl grid grid-cols-1 md:grid-cols-[31%_1fr]">
 
         <div className={`
         fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl
@@ -93,13 +93,14 @@ export default function Settings() {
             onClick={() => setMenuOpen(true)}
             className="md:hidden p-2"
           >
-            ☰
+            <Image src={blueRightArrow} alt='img' width={25} height={20}/>
           </button>
           {activeSection === 'general' && <ProfileUpload profileData={profileData} />}
 
           <div className="space-y-4 w-full px-4 pt-5">
             {activeSection === 'general' && <GeneralSettings session={session} status={status} profileData={profileData} reloadProfile={() => loadProfile(session.user.id)} />}
             {activeSection === 'auth' && <Auth session={session} status={status} profileData={profileData} />}
+            {activeSection === "notifications" && <Notifications /> }
           </div>
         </div>
       </div>

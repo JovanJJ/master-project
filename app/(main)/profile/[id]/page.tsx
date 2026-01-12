@@ -9,23 +9,27 @@ import { redirect } from "next/navigation";
 import { notFound } from 'next/navigation';
 import Comments from "@/app/components/Comments";
 import { fetchComments } from "@/lib/actions/worker";
+import User from "@/lib/models/User";
+import { fetchWorkers } from "@/lib/actions/worker";
+import React, { Fragment } from 'react';
+import Link from "next/link";
 
 type WorkerProfilePageProps = {
-    params: Promise<{ id: string }> 
+    params: Promise<{ id: string }>
 }
 
 export default async function ProfilePage({ params }: WorkerProfilePageProps) {
 
     const { id } = await params;
-    
+
     const session = await getServerSession(authOptions);
-    
+
     if (!session) {
-        redirect("/login");
+        redirect("/login/user");
     }
 
     const workerData = await fetchWorkerById(id);
-    
+
     if (!workerData) {
         notFound();
     }
@@ -33,21 +37,28 @@ export default async function ProfilePage({ params }: WorkerProfilePageProps) {
     const { _id, firstName, lastName, profession, location, birthYear, email, phone, profileImage, description } = workerData;
 
     const comments = await fetchComments(_id);
-    console.log(profileImage);
+    console.log(comments);
+
     const noImage = 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Placeholder_no_text.svg';
 
+
+    const res = await fetch('http://localhost:3000/api/workers');
+    const { workers } = await res.json();
+   
+
+
     return (
-        <section className="w-full">
+        <section className="w-full pt-15 pb-30">
             <div className="mx-auto max-w-[1100px] flex flex-col xl:flex-row gap-7 mt-[30px]">
                 <div className="mx-auto w-full p-3 rounded-3xl shadow-2xl">
                     <div className="w-full flex justify-center sm:justify-start pt-7">
                         <div className="w-2/3 max-w-48 aspect-square rounded-full relative border-3 border-blue-200">
-                               <Image
-                                    src={profileImage === null ?noImage :profileImage}
-                                    fill
-                                    alt="Profile Image"
-                                    className="w-full rounded-full object-cover"
-                                />    
+                            <Image
+                                src={profileImage === null ? noImage : profileImage}
+                                fill
+                                alt="Profile Image"
+                                className="w-full rounded-full object-cover"
+                            />
                             <div className="absolute -bottom-6 -right-6 z-30 sm:-bottom-5 sm:-right-5 md:-bottom-1 md:-right-5 lg:bottom-1 lg:right-1">
                                 <Image src={Star} alt="star" className="w-[50px] h-[50px]" />
                             </div>
@@ -81,313 +92,91 @@ export default async function ProfilePage({ params }: WorkerProfilePageProps) {
                     </div>
 
                     <Comments comments={comments} />
+
                     <aside className="xl:hidden p-4 mt-7 md:max-w-[1100px] h-auto border border-blue-200 rounded-xl">
                         <h2 className="w-fit mx-auto text-xl pb-4">Pogledajte i nase ostale majstore</h2>
                         <div className="overflow-y-auto h-[300px] grid grid-cols gap-4 p-4 sm:grid-cols-2 ">
-                            <div className="flex w-2/3 sm:w-full max-h-[120px]  gap-3 p-3 rounded-xl border border-blue-100 bg-white hover:shadow-md transition">
+                            {workers && workers.filter((worker) => worker._id.toString() !== _id.toString()).map((worker) => {
+                                return (
+                                    <Fragment key={worker._id}>
+                                        <div className="flex w-2/3 sm:w-full max-h-[120px]  gap-3 p-3 rounded-xl border border-blue-100 bg-white hover:shadow-md transition">
 
-                                <div>
-                                    <Image
-                                        src={Globe}
-                                        alt="Profile"
-                                        className="w-24 h-24 rounded-xl "
-                                    />
-                                </div>
+                                            <div>
+                                                <Image
+                                                    src={worker.profileImage || noImage}
+                                                    alt="Profile"
+                                                    className="w-24 h-24 rounded-xl "
+                                                    width={50}
+                                                    height={50}
+                                                />
+                                            </div>
 
 
-                                <div className="flex flex-col justify-between min-w-0">
-                                    <div className="space-y-1">
-                                        <div className="font-semibold text-sm truncate">
-                                            Jovan Jovanović
+                                            <div className="flex flex-col justify-between min-w-0">
+                                                <div className="space-y-1">
+                                                    <div className="font-semibold text-sm truncate">
+                                                        {worker.firstName} {worker.lastName}
+                                                    </div>
+                                                    <div className="text-xs text-gray-600">
+                                                        {worker.profession}
+                                                    </div>
+                                                    <div className="text-xs text-gray-500">
+                                                        {worker.city}
+                                                    </div>
+                                                </div>
+
+                                                <Link href={`/profile/${worker._id}`} className="text-xs text-blue-600 hover:underline self-start">
+                                                    Pogledaj profil →
+                                                </Link>
+                                            </div>
                                         </div>
-                                        <div className="text-xs text-gray-600">
-                                            Programer
-                                        </div>
-                                        <div className="text-xs text-gray-500">
-                                            Beograd
-                                        </div>
-                                    </div>
-
-                                    <button className="text-xs text-blue-600 hover:underline self-start">
-                                        Pogledaj profil →
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div className="flex w-2/3 sm:w-full max-h-[120px]  gap-3 p-3 rounded-xl border border-blue-100 bg-white hover:shadow-md transition">
-
-                                <div>
-                                    <Image
-                                        src={Globe}
-                                        alt="Profile"
-                                        className="w-24 h-24 rounded-xl "
-                                    />
-                                </div>
-
-
-                                <div className="flex flex-col justify-between min-w-0">
-                                    <div className="space-y-1">
-                                        <div className="font-semibold text-sm truncate">
-                                            Jovan Jovanović
-                                        </div>
-                                        <div className="text-xs text-gray-600">
-                                            Programer
-                                        </div>
-                                        <div className="text-xs text-gray-500">
-                                            Beograd
-                                        </div>
-                                    </div>
-
-                                    <button className="text-xs text-blue-600 hover:underline self-start">
-                                        Pogledaj profil →
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div className="flex w-2/3 sm:w-full max-h-[120px]  gap-3 p-3 rounded-xl border border-blue-100 bg-white hover:shadow-md transition">
-
-                                <div>
-                                    <Image
-                                        src={Globe}
-                                        alt="Profile"
-                                        className="w-24 h-24 rounded-xl "
-                                    />
-                                </div>
-
-
-                                <div className="flex flex-col justify-between min-w-0">
-                                    <div className="space-y-1">
-                                        <div className="font-semibold text-sm truncate">
-                                            Jovan Jovanović
-                                        </div>
-                                        <div className="text-xs text-gray-600">
-                                            Programer
-                                        </div>
-                                        <div className="text-xs text-gray-500">
-                                            Beograd
-                                        </div>
-                                    </div>
-
-                                    <button className="text-xs text-blue-600 hover:underline self-start">
-                                        Pogledaj profil →
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div className="flex w-2/3 sm:w-full max-h-[120px]  gap-3 p-3 rounded-xl border border-blue-100 bg-white hover:shadow-md transition">
-
-                                <div>
-                                    <Image
-                                        src={Globe}
-                                        alt="Profile"
-                                        className="w-24 h-24 rounded-xl "
-                                    />
-                                </div>
-
-
-                                <div className="flex flex-col justify-between min-w-0">
-                                    <div className="space-y-1">
-                                        <div className="font-semibold text-sm truncate">
-                                            Jovan Jovanović
-                                        </div>
-                                        <div className="text-xs text-gray-600">
-                                            Programer
-                                        </div>
-                                        <div className="text-xs text-gray-500">
-                                            Beograd
-                                        </div>
-                                    </div>
-
-                                    <button className="text-xs text-blue-600 hover:underline self-start">
-                                        Pogledaj profil →
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div className="flex w-2/3 sm:w-full max-h-[120px]  gap-3 p-3 rounded-xl border border-blue-100 bg-white hover:shadow-md transition">
-
-                                <div>
-                                    <Image
-                                        src={Globe}
-                                        alt="Profile"
-                                        className="w-24 h-24 rounded-xl "
-                                    />
-                                </div>
-
-
-                                <div className="flex flex-col justify-between min-w-0">
-                                    <div className="space-y-1">
-                                        <div className="font-semibold text-sm truncate">
-                                            Jovan Jovanović
-                                        </div>
-                                        <div className="text-xs text-gray-600">
-                                            Programer
-                                        </div>
-                                        <div className="text-xs text-gray-500">
-                                            Beograd
-                                        </div>
-                                    </div>
-
-                                    <button className="text-xs text-blue-600 hover:underline self-start">
-                                        Pogledaj profil →
-                                    </button>
-                                </div>
-                            </div>
+                                    </Fragment>
+                                );
+                            })}
                         </div>
                     </aside>
+
                 </div>
 
                 <aside className="hidden mt-4 xl:block w-[300px] space-y-6 h-[500px]">
                     <h2 className="w-fit mx-auto text-xl">Pogledajte ostale majstore</h2>
-                    <div className="flex gap-3 p-3 rounded-xl border border-blue-100 bg-white hover:shadow-md transition">
+                    {workers && workers.filter((worker) => worker._id.toString() !== _id.toString()).map((worker) => {
+                        return (
+                            <div key={worker._id} className="flex gap-3 p-3 rounded-xl border border-blue-100 bg-white hover:shadow-md transition">
 
-                        <div>
-                            <Image
-                                src={Globe}
-                                alt="Profile"
-                                className="w-24 h-24 rounded-xl "
-                            />
-                        </div>
-
-
-                        <div className="flex flex-col justify-between min-w-0">
-                            <div className="space-y-1">
-                                <div className="font-semibold text-sm truncate">
-                                    Jovan Jovanović
+                                <div className="">
+                                    <Image
+                                        src={worker.profileImage || noImage}
+                                        alt="Profile"
+                                        className="w-24 h-24 rounded-xl"
+                                        width={50}
+                                        height={50}
+                                        
+                                    />
                                 </div>
-                                <div className="text-xs text-gray-600">
-                                    Programer
-                                </div>
-                                <div className="text-xs text-gray-500">
-                                    Beograd
-                                </div>
-                            </div>
-
-                            <button className="text-xs text-blue-600 hover:underline self-start">
-                                Pogledaj profil →
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="flex gap-3 p-3 rounded-xl border border-blue-100 bg-white hover:shadow-md transition">
-
-                        <div>
-                            <Image
-                                src={Globe}
-                                alt="Profile"
-                                className="w-24 h-24 rounded-xl "
-                            />
-                        </div>
 
 
-                        <div className="flex flex-col justify-between min-w-0">
-                            <div className="space-y-1">
-                                <div className="font-semibold text-sm truncate">
-                                    Jovan Jovanović
-                                </div>
-                                <div className="text-xs text-gray-600">
-                                    Programer
-                                </div>
-                                <div className="text-xs text-gray-500">
-                                    Beograd
+                                <div className="flex flex-col justify-between min-w-0">
+                                    <div className="space-y-1">
+                                        <div className="font-semibold text-sm truncate">
+                                            {worker.firstName} {worker.lastName}
+                                        </div>
+                                        <div className="text-xs text-gray-600">
+                                            {worker.profession}
+                                        </div>
+                                        <div className="text-xs text-gray-500">
+                                            {worker.city}
+                                        </div>
+                                    </div>
+
+                                    <Link href={`/profile/${worker._id}`} className="text-xs text-blue-600 hover:underline self-start">
+                                        Pogledaj profil →
+                                    </Link>
                                 </div>
                             </div>
-
-                            <button className="text-xs text-blue-600 hover:underline self-start">
-                                Pogledaj profil →
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="flex gap-3 p-3 rounded-xl border border-blue-100 bg-white hover:shadow-md transition">
-
-                        <div>
-                            <Image
-                                src={Globe}
-                                alt="Profile"
-                                className="w-24 h-24 rounded-xl "
-                            />
-                        </div>
-
-
-                        <div className="flex flex-col justify-between min-w-0">
-                            <div className="space-y-1">
-                                <div className="font-semibold text-sm truncate">
-                                    Jovan Jovanović
-                                </div>
-                                <div className="text-xs text-gray-600">
-                                    Programer
-                                </div>
-                                <div className="text-xs text-gray-500">
-                                    Beograd
-                                </div>
-                            </div>
-
-                            <button className="text-xs text-blue-600 hover:underline self-start">
-                                Pogledaj profil →
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="flex gap-3 p-3 rounded-xl border border-blue-100 bg-white hover:shadow-md transition">
-
-                        <div>
-                            <Image
-                                src={Globe}
-                                alt="Profile"
-                                className="w-24 h-24 rounded-xl "
-                            />
-                        </div>
-
-
-                        <div className="flex flex-col justify-between min-w-0">
-                            <div className="space-y-1">
-                                <div className="font-semibold text-sm truncate">
-                                    Jovan Jovanović
-                                </div>
-                                <div className="text-xs text-gray-600">
-                                    Programer
-                                </div>
-                                <div className="text-xs text-gray-500">
-                                    Beograd
-                                </div>
-                            </div>
-
-                            <button className="text-xs text-blue-600 hover:underline self-start">
-                                Pogledaj profil →
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="flex gap-3 p-3 rounded-xl border border-blue-100 bg-white hover:shadow-md transition">
-
-                        <div>
-                            <Image
-                                src={Globe}
-                                alt="Profile"
-                                className="w-24 h-24 rounded-xl "
-                            />
-                        </div>
-
-
-                        <div className="flex flex-col justify-between min-w-0">
-                            <div className="space-y-1">
-                                <div className="font-semibold text-sm truncate">
-                                    Jovan Jovanović
-                                </div>
-                                <div className="text-xs text-gray-600">
-                                    Programer
-                                </div>
-                                <div className="text-xs text-gray-500">
-                                    Beograd
-                                </div>
-                            </div>
-
-                            <button className="text-xs text-blue-600 hover:underline self-start">
-                                Pogledaj profil →
-                            </button>
-                        </div>
-                    </div>
+                            
+                        );
+                    })}
                 </aside>
             </div>
         </section>

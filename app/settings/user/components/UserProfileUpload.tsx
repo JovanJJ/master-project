@@ -3,16 +3,17 @@
 import { useState, useRef, useEffect } from "react";
 import { uploadProfileImage } from "@/lib/actions/worker";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function UserProfileUpload({profileImage, userId}) {
-    const [selectedImage, setSelectedImage] = useState(null)
-    const [previewUrl, setPreviewUrl] = useState(null)
-    const [success, setSuccess] = useState(false)
-    const [error, setError] = useState(null)
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [previewUrl, setPreviewUrl] = useState();
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState(null);
     const [userData, setUserData] = useState([]);
     const fileInputRef = useRef(null);
     const { update } = useSession();
-    
+    const router = useRouter();
     
     
     
@@ -20,6 +21,7 @@ export default function UserProfileUpload({profileImage, userId}) {
     
     
     const userImage = profileImage;
+    
 
 
     const handleImageChange = (e) => {
@@ -33,9 +35,9 @@ export default function UserProfileUpload({profileImage, userId}) {
 
             setSelectedImage(file);
 
-            const reader = new FileReader() //Create reader instance 
-            reader.readAsDataURL(file)  //Converts file data into url async
-            reader.onloadend = () => {  //Callback when reading is finsihed
+            const reader = new FileReader() 
+            reader.readAsDataURL(file)  
+            reader.onloadend = () => {  
                 setPreviewUrl(reader.result)
             }
         }
@@ -55,38 +57,39 @@ export default function UserProfileUpload({profileImage, userId}) {
         }
 
         setError(null)
-        setSuccess(false)
+        
 
         try {
-            // Create FormData
+            
             const formData = new FormData()
             formData.append('profilePicture', selectedImage)
             formData.append('userId', userId)
-
-            // Call the server action directly
+            
+            
             const res = await fetch(`http://localhost:3000/api/user/profileUpload`,
                 {
                     method: "POST",
                     body: formData,
                 }
             );
-
+            
             const result = await res.json();
-            console.log(result);
+            setSuccess(true);
+            
             if (!result.data.success) {
                 throw new Error(result.message)
             }
 
-            // Success!
-            setSuccess(true)
-            setSelectedImage(null)
-            setPreviewUrl(result.data.image) // Update with the new image URL
+            
+            
+            setSelectedImage(null);
+            setPreviewUrl(result.data.image);
 
-
+            
         } catch (err) {
-            setError(err.message)
+            setError(err.message);
         }
-
+router.refresh();
     }
 
     return (

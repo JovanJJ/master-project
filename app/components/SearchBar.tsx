@@ -1,18 +1,28 @@
 'use client';
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import arrowDown from "../../public/arrow-down.svg";
+import Image from "next/image";
 
 export default function SearchBar() {
   const router = useRouter();
-  const [profession, setProfession] = useState('Programer'); 
+  const [profession, setProfession] = useState('Programer');
   const [location, setLocation] = useState('Jagodina');
+  const [search, setSearch] = useState(false);
   const page = '1';
 
   const params = new URLSearchParams();
-  if(profession)  params.set('p', profession);
-  if(location) params.set('loc', location);
-  if(page) params.set('page', page);
-  
+  if (search) {
+    params.set("p", "all");
+    params.set("loc", "all");
+    params.set("page", page);
+  } else {
+    if (profession) params.set('p', profession);
+    if (location) params.set('loc', location);
+    if (page) params.set('page', page);
+  }
+
+
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,26 +34,39 @@ export default function SearchBar() {
       <div className="mx-auto max-w-4xl">
         <div className="bg-white rounded-xl shadow-xl p-4 md:p-6">
           <div className="flex flex-col md:flex-row gap-4">
-            
-            <div className="flex-1 relative">
-              <input 
-                type="text" 
-                placeholder="Profesija" 
-                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" 
-              />
-            </div>
-            
-            <div className="flex-1 relative">
-              <input 
-                type="text" 
-                placeholder="Lokacija" 
-                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" 
-              />
-            </div>
+            {search ? (
+              <div className="sm:h-[50px] flex-1 relative z-20 flex items-center justify-center">
+                <span className="flex justify-center sm:text-xl">Trenutno možete pretražiti sve dostupne majstore</span>
+              </div>
+            ) : (
+              <>
+                <div className="relative flex-1" onClick={() => { setSearch(prev => !prev) }}>
+                  <div className="flex border border-blue-400 px-4 py-3 rounded-xl justify-between cursor-pointer">
+                    <span className="text-gray-400">Profesija</span>
+                    <Image src={arrowDown} alt="arrow" width={15} height={15}></Image>
+                  </div>
+                </div>
 
-            <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition w-full md:w-auto flex items-center justify-center">
-              <span>Search</span>
+                <div className="flex-1 relative" onClick={() => { setSearch(prev => !prev) }}>
+                  <div className="flex border border-blue-400 px-4 py-3 rounded-xl justify-between cursor-pointer">
+                    <span className="text-gray-400">Lokacija</span>
+                    <Image src={arrowDown} alt="arrow" width={15} height={15}></Image>
+                  </div>
+                </div>
+              </>
+            )}
+
+
+            {search ?
+            <button  type="submit" className="bg-blue-500 hover:bg-blue-500 text-white font-bold py-3 px-8 rounded-lg transition w-full md:w-auto flex items-center justify-center cursor-pointer">
+              <span>Pretraži</span>
             </button>
+            :
+            <button disabled type="submit" className="bg-gray-400  text-white font-bold py-3 px-8 rounded-lg w-full md:w-auto flex items-center justify-center">
+              <span>Pretraži</span>
+            </button>
+            }
+            
           </div>
         </div>
       </div>

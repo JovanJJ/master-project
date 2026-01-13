@@ -1,11 +1,11 @@
-import { connectDB } from "../../../lib/db.js";
+import { connectDB } from "../../../../lib/db.js";
 import { NextResponse } from "next/server";
-import cloudinary from "../../../lib/cloudinary.js";
-import User from "../../../lib/models/User.js";
+import cloudinary from "../../../../lib/cloudinary.js";
+import User from "../../../../lib/models/User.js";
 import { revalidatePath } from "next/cache";
 
 export async function POST(req) {
-    const formData = await req.formData();
+    const formData = await req.formData();  
     await connectDB();
     const file = formData.get("profilePicture");
     const id = formData.get("userId");

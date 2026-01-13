@@ -1,24 +1,22 @@
 import Image from "next/image";
 import Globe from "../../../../public/JJ.jpg";
 import Star from "../../../../public/stars.avif";
-import { fetchWorkerById } from "@/lib/actions/worker";
-import { addComments } from "@/lib/actions/worker";
+import { fetchWorkerById } from "../../../../lib/actions/worker";
+import { addComments } from "../../../../lib/actions/worker";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "../../../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import { notFound } from 'next/navigation';
-import Comments from "@/app/components/Comments";
-import { fetchComments } from "@/lib/actions/worker";
-import User from "@/lib/models/User";
-import { fetchWorkers } from "@/lib/actions/worker";
+import Comments from "../../../components/Comments";
+import { fetchComments } from "../../../../lib/actions/worker";
+import User from "../../../../lib/models/User";
+import { fetchWorkers } from "../../../../lib/actions/worker";
 import React, { Fragment } from 'react';
 import Link from "next/link";
 
-type WorkerProfilePageProps = {
-    params: Promise<{ id: string }>
-}
 
-export default async function ProfilePage({ params }: WorkerProfilePageProps) {
+
+export default async function ProfilePage({ params }) {
 
     const { id } = await params;
 

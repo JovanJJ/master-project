@@ -1,24 +1,28 @@
 'use client';
 
-import { useState, useRef } from "react";
-import { uploadProfileImage } from "@/lib/actions/worker";
+import { useState, useRef, useEffect } from "react";
+import  {uploadProfileImage} from "../../../../lib/actions/worker";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
-export default function ProfileUpload({profileData}) {
-    const [selectedImage, setSelectedImage] = useState(null)
-    const [previewUrl, setPreviewUrl] = useState(null)
-    const [success, setSuccess] = useState(false)
-    const [error, setError] = useState(null)
+export default function UserProfileUpload({profileImage, userId}) {
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [previewUrl, setPreviewUrl] = useState();
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState(null);
+    const [userData, setUserData] = useState([]);
     const fileInputRef = useRef(null);
     const { update } = useSession();
+    const router = useRouter();
     
-    const { data: session, status } = useSession();
     
-    if (status === "loading") {
-        return <p>Loading...</p>;
-    }
-    const workerId = session.user.id;
-    const userImage = profileData?.profileImage;
+    
+
+    
+    
+    const userImage = profileImage;
+    
+
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -31,17 +35,14 @@ export default function ProfileUpload({profileData}) {
 
             setSelectedImage(file);
 
-            const reader = new FileReader() //Create reader instance 
-            reader.readAsDataURL(file)  //Converts file data into url async
-            reader.onloadend = () => {  //Callback when reading is finsihed
+            const reader = new FileReader() 
+            reader.readAsDataURL(file)  
+            reader.onloadend = () => {  
                 setPreviewUrl(reader.result)
             }
         }
 
     }
-
-    
-    
 
     const inputButtonClick = () => {
         fileInputRef.current?.click();
@@ -55,33 +56,40 @@ export default function ProfileUpload({profileData}) {
             return
         }
 
-
         setError(null)
-        setSuccess(false)
+        
 
         try {
-            // Create FormData
+            
             const formData = new FormData()
             formData.append('profilePicture', selectedImage)
-            formData.append('workerId', workerId)
-
-            // Call the server action directly
-            const result = await uploadProfileImage(formData)
-
-            if (!result.success) {
+            formData.append('userId', userId)
+            
+            
+            const res = await fetch(`http://localhost:3000/api/user/profileUpload`,
+                {
+                    method: "POST",
+                    body: formData,
+                }
+            );
+            
+            const result = await res.json();
+            setSuccess(true);
+            
+            if (!result.data.success) {
                 throw new Error(result.message)
             }
 
-            // Success!
-            setSuccess(true)
-            setSelectedImage(null)
-            setPreviewUrl(result.imageUrl) // Update with the new image URL
-           
+            
+            
+            setSelectedImage(null);
+            setPreviewUrl(result.data.image);
 
+            
         } catch (err) {
-            setError(err.message)
+            setError(err.message);
         }
-        
+router.refresh();
     }
 
     return (
@@ -98,16 +106,16 @@ export default function ProfileUpload({profileData}) {
                     <div onClick={inputButtonClick} className="flex items-center overflow-hidden justify-center bg-gray-100 border-2 border-blue-200 max-w-48 h-48 mx-auto rounded-full
              cursor-pointer hover:border-blue-500 transition">
                         {
-                        userImage && !previewUrl ? (<img src={userImage} alt="profile image" onClick={inputButtonClick} className="w-full h-full object-cover" />
+                            userImage && !previewUrl ? (<img src={userImage} alt="profile image" onClick={inputButtonClick} className="w-full h-full object-cover" />
 
-                        ):(
-                            <span>Izaberi sliku</span>
-                        )
-                    }
+                            ) : (
+                                <span>Izaberi sliku</span>
+                            )
+                        }
                     </div>
                 )
             }
-            
+
             {selectedImage ? (
                 <button type="submit" className="block px-3 py-2 bg-blue-500 rounded-3xl text-white w-fit mx-auto pointer hover:bg-blue-600 transition">Dodaj sliku</button>
             ) : (
@@ -128,4 +136,5 @@ export default function ProfileUpload({profileData}) {
             )}
         </form>
     )
+
 }

@@ -8,7 +8,7 @@ import GeneralSettings from './components/GeneralSettings';
 import Auth from './components/Auth';
 import { useSession } from 'next-auth/react';
 import { redirect } from "next/navigation"
-import { fetchWorkerById } from '@/lib/actions/worker';
+import { fetchWorkerById } from "../../../lib/actions/worker";
 import Notifications from './components/Notifications';
 import blueRightArrow from "../../../public/arrow-right-1.svg";
 

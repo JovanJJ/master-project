@@ -2,6 +2,7 @@
   "name": "master-project",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -24,15 +25,12 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/bcryptjs": "^3.0.0",
-    "@types/next-auth": "^3.15.0",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@types/node": "25.0.6",
+    "@types/react": "19.2.8",
     "dotenv": "^17.2.3",
     "eslint": "^9",
     "eslint-config-next": "16.0.7",
     "tailwindcss": "^4",
-    "tsx": "^4.21.0",
-    "typescript": "^5"
+    "tsx": "^4.21.0"
   }
 }

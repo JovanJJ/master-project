@@ -2,21 +2,13 @@
 
 import Image from "next/image";
 import globe from '../../../public/globe.svg';
-import { fetchWorkers } from '@/lib/actions/worker'; // Import the new function
+import { fetchWorkers } from '../../../lib/actions/worker'; 
 import Link from "next/link";
-import Pagination from "@/app/components/ui/Pagination";
+import Pagination from "../../components/ui/Pagination";
 
-type SearchParams = {
-    p?: string
-    loc?: string
-    page?: string
-}
 
-type SearchPageProps = {
-    searchParams: Promise<SearchParams>;
-}
 
-export default async function SearchPage({ searchParams }: SearchPageProps) {
+export default async function SearchPage({ searchParams }) {
     const params = await searchParams;
     const p = params.p;
     const loc = params.loc;

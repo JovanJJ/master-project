@@ -1,11 +1,9 @@
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 
-export default function HomeLayout({
+export default function LoginLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}) {
   return (
     <div className="min-h-screen flex flex-col antialiased ">
       <Navbar />

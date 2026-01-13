@@ -24,7 +24,7 @@ export default function SearchBar() {
 
 
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = (e) => {
     e.preventDefault();
     router.push(`/search?${params.toString()}`);
   }

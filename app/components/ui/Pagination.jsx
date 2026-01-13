@@ -3,17 +3,14 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-type PaginationProps = {
-  totalPages: number;
-  currentPage: number;
-};
 
-export default function Pagination({ totalPages, currentPage }: PaginationProps) {
+
+export default function Pagination({ totalPages, currentPage }) {
   const searchParams = useSearchParams();
 
   if (totalPages <= 1) return null;
 
-  const createPageUrl = (page: number) => {
+  const createPageUrl = (page) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", page.toString());
     return `?${params.toString()}`;

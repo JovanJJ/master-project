@@ -4,7 +4,7 @@ import React from "react";
 
 
 
-export default function Comments({comments} : string) {
+export default function Comments({comments}) {
     
     return (
         <>

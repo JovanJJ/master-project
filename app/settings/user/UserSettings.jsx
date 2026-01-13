@@ -6,7 +6,7 @@ import NotificationBell from "../../../public/notification-bell.svg";
 import ToggleButton from "../worker/components/ToggleButton";
 import FingerPointer from "../../../public/finger-pointer.svg";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "/app/api/auth/[...nextauth]/route";
 import fetchUser from "../../../lib/fetchers/fetch";
 export default async function UserSettings(){
     const session = await getServerSession(authOptions);

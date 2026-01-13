@@ -1,6 +1,6 @@
 'use client';
 
-import { createWorker } from "@/lib/actions/worker";
+import { createWorker } from "../../../../lib/actions/worker";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -12,17 +12,17 @@ export default function RegisterWorker() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
-    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handlePasswordChange = (e) => {
         setPassword(e.target.value);
         setPasswordError('');
     };
 
-    const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleConfirmPasswordChange = (e) => {
         setConfirmPassword(e.target.value);
         setPasswordError('');
     };
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e) => {
         if (password !== confirmPassword) {
             e.preventDefault();
             setPasswordError('Lozinke se ne poklapaju');
@@ -52,7 +52,7 @@ export default function RegisterWorker() {
             } else {
                 setMessage(result.message);
             }
-        } catch (error: any) {
+        } catch (error) {
             setMessage('Greška pri registraciji. Pokušajte ponovo.');
             console.error('Registration error:', error);
         } finally {

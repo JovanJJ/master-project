@@ -1,7 +1,7 @@
 import { connectDB } from "../../../../lib/db.js";
 import { NextResponse } from "next/server";
 import cloudinary from "../../../../lib/cloudinary.js";
-import User from "../../../../lib/models/User.js";
+import User from "../../../../lib/models/User.jsx";
 import { revalidatePath } from "next/cache";
 
 export async function POST(req) {

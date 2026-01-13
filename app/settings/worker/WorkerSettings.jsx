@@ -18,16 +18,17 @@ export default function Settings() {
   const [profileData, setProfileData] = useState(null);
   const { data: session, status } = useSession();
 
-  const loadProfile = async (id) => {
-    const data = await fetchWorkerById(id);
-    setProfileData(data);
-  }
 
   useEffect(() => {
-    if (status === "authenticated" && session?.user?.id) {
-      loadProfile(session.user.id);
-    }
-  }, [status, session?.user?.id]);
+  if (status !== "authenticated" || !session?.user?.id) return;
+
+  const loadProfile = async () => {
+    const data = await fetchWorkerById(session.user.id);
+    setProfileData(data);
+  };
+
+  loadProfile();
+}, [status, session?.user?.id]);
 
   if (status === "loading") {
     return ('')

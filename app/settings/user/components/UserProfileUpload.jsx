@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import  {uploadProfileImage} from "../../../../lib/actions/worker";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function UserProfileUpload({profileImage, userId}) {
     const [selectedImage, setSelectedImage] = useState(null);
@@ -99,14 +100,14 @@ router.refresh();
             {
                 previewUrl ? (
                     <div className="w-48 h-48 mx-auto rounded-full overflow-hidden border-2 border-transparent hover:border-blue-500 transition">
-                        <img src={previewUrl} alt="profile image" onClick={inputButtonClick} className="w-full h-full object-cover" />
+                        <Image src={previewUrl} alt="profile fill image" onClick={inputButtonClick} className="w-full h-full object-cover" />
                     </div>
                 ) : (
 
                     <div onClick={inputButtonClick} className="flex items-center overflow-hidden justify-center bg-gray-100 border-2 border-blue-200 max-w-48 h-48 mx-auto rounded-full
              cursor-pointer hover:border-blue-500 transition">
                         {
-                            userImage && !previewUrl ? (<img src={userImage} alt="profile image" onClick={inputButtonClick} className="w-full h-full object-cover" />
+                            userImage && !previewUrl ? (<Image fill src={userImage} alt="profile image" onClick={inputButtonClick} className="w-full h-full object-cover" />
 
                             ) : (
                                 <span>Izaberi sliku</span>

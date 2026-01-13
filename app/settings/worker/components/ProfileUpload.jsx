@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import { uploadProfileImage } from "../../../../lib/actions/worker";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 export default function ProfileUpload({profileData}) {
     const [selectedImage, setSelectedImage] = useState(null)
@@ -91,14 +92,14 @@ export default function ProfileUpload({profileData}) {
             {
                 previewUrl ? (
                     <div className="w-48 h-48 mx-auto rounded-full overflow-hidden border-2 border-transparent hover:border-blue-500 transition">
-                        <img src={previewUrl} alt="profile image" onClick={inputButtonClick} className="w-full h-full object-cover" />
+                        <Image src={previewUrl} fill alt="profile image" onClick={inputButtonClick} className="w-full h-full object-cover" />
                     </div>
                 ) : (
 
                     <div onClick={inputButtonClick} className="flex items-center overflow-hidden justify-center bg-gray-100 border-2 border-blue-200 max-w-48 h-48 mx-auto rounded-full
              cursor-pointer hover:border-blue-500 transition">
                         {
-                        userImage && !previewUrl ? (<img src={userImage} alt="profile image" onClick={inputButtonClick} className="w-full h-full object-cover" />
+                        userImage && !previewUrl ? (<Image fill src={userImage} alt="profile image" onClick={inputButtonClick} className="w-full h-full object-cover" />
 
                         ):(
                             <span>Izaberi sliku</span>

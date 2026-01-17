@@ -67,7 +67,8 @@ export default function UserProfileUpload({profileImage, userId}) {
             formData.append('userId', userId)
             
             
-            const res = await fetch(`http://localhost:3000/api/user/profileUpload`,
+            const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+            const res = await fetch(`${baseUrl}/api/user/profileUpload`,
                 {
                     method: "POST",
                     body: formData,

@@ -30,7 +30,8 @@ export async function POST(req) {
 
     await user.save();
     
-    const resetLink = `http://localhost:3000/reset-password?token=${token}`;
+    const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+    const resetLink = `${baseUrl}/reset-password?token=${token}`;
     const response = await sendEmail({
         to: user.email,
         subject: "Promena lozinke",

@@ -12,7 +12,8 @@ export default async function UserSettings(){
     const session = await getServerSession(authOptions);
     const userId = session.user.id;
 
-    const res = await fetch(`http://localhost:3000/api/user/settings?id=${userId}`);
+    const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+    const res = await fetch(`${baseUrl}/api/user/settings?id=${userId}`);
     const data = await res.json();
     console.log(data);
     

@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "../lib/auth-config";
+import { authOptions } from "../../lib/auth-config";
 import WorkerSettings  from "./worker/WorkerSettings"; 
 import { redirect } from "next/navigation"; 
 import UserSettings from "./user/UserSettings";

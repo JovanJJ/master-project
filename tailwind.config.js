@@ -1,7 +1,7 @@
 // tailwind.config.js
 
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   // These paths tell Tailwind where to look for your utility classes
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',

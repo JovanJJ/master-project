@@ -31,6 +31,7 @@ export async function POST(req) {
     worker.password = newPassword;
     worker.passwordResetToken = undefined; 
     worker.passwordResetExpires = undefined;
+    worker.markModified('password');
 
     await worker.save();
 

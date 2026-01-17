@@ -86,20 +86,19 @@ export default function ProfileUpload({profileData}) {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="mx-auto p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="w-fit mx-auto p-6 space-y-4">
             <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
 
             {
                 previewUrl ? (
-                    <div className="w-48 h-48 mx-auto rounded-full overflow-hidden border-2 border-transparent hover:border-blue-500 transition">
-                        <Image src={previewUrl} fill alt="profile image" onClick={inputButtonClick} className="w-full h-full object-cover" />
+                    <div className="w-48 h-48 mx-auto rounded-full overflow-hidden border-2 border-transparent hover:border-blue-500 transition relative">
+                        <Image src={previewUrl} alt="profile image" onClick={inputButtonClick} width={192} height={192} className="w-full h-full object-cover" />
                     </div>
                 ) : (
 
-                    <div onClick={inputButtonClick} className="flex items-center overflow-hidden justify-center bg-gray-100 border-2 border-blue-200 max-w-48 h-48 mx-auto rounded-full
-             cursor-pointer hover:border-blue-500 transition">
+                    <div onClick={inputButtonClick} className="flex items-center overflow-hidden justify-center bg-gray-100 border-2 border-blue-200 w-48 h-48 mx-auto rounded-full cursor-pointer hover:border-blue-500 transition relative">
                         {
-                        userImage && !previewUrl ? (<Image fill src={userImage} alt="profile image" onClick={inputButtonClick} className="w-full h-full object-cover" />
+                        userImage && !previewUrl ? (<Image src={userImage} alt="profile image" onClick={inputButtonClick} width={192} height={192} className="w-full h-full object-cover" />
 
                         ):(
                             <span>Izaberi sliku</span>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Image from "next/image";
 import Simage from "../../../public/settings-icon-14950.png";
 import ProfileUpload from "./components/ProfileUpload";
@@ -18,17 +18,15 @@ export default function Settings() {
   const [profileData, setProfileData] = useState(null);
   const { data: session, status } = useSession();
 
+  const loadProfile = useCallback(async (userId) => {
+    const data = await fetchWorkerById(userId);
+    setProfileData(data);
+  }, []);
 
   useEffect(() => {
-  if (status !== "authenticated" || !session?.user?.id) return;
-
-  const loadProfile = async () => {
-    const data = await fetchWorkerById(session.user.id);
-    setProfileData(data);
-  };
-
-  loadProfile();
-}, [status, session?.user?.id]);
+    if (status !== "authenticated" || !session?.user?.id) return;
+    loadProfile(session.user.id);
+  }, [status, session?.user?.id, loadProfile]);
 
   if (status === "loading") {
     return ('')
@@ -94,14 +92,14 @@ export default function Settings() {
             onClick={() => setMenuOpen(true)}
             className="md:hidden p-2"
           >
-            <Image src={blueRightArrow} alt='img' width={25} height={20}/>
+            <Image src={blueRightArrow} alt='img' width={25} height={20} />
           </button>
-          {activeSection === 'general' && <ProfileUpload profileData={profileData} />}
 
           <div className="space-y-4 w-full px-4 pt-5">
+            {activeSection === 'general' && <ProfileUpload profileData={profileData} />}
             {activeSection === 'general' && <GeneralSettings session={session} status={status} profileData={profileData} reloadProfile={() => loadProfile(session.user.id)} />}
             {activeSection === 'auth' && <Auth session={session} status={status} profileData={profileData} />}
-            {activeSection === "notifications" && <Notifications /> }
+            {activeSection === "notifications" && <Notifications />}
           </div>
         </div>
       </div>

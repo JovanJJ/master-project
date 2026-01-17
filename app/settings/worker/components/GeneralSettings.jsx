@@ -16,7 +16,7 @@ export default  function  GeneralSettings({ session, status, profileData, reload
         }
     }, [state.success]);
 
-    console.log(state)
+    
 
     if (status === "loading" || !profileData) return null;
     

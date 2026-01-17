@@ -17,11 +17,6 @@ export default function ForgotPasswordReset() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const formData = new FormData();
-        formData.append("newPassword", newPassword);
-        formData.append("confirmedPassword", confirmPassword);
-        formData.append("token", token);
-
         const res = await fetch('/api/change-password', {
             method: "POST",
             headers: {"Content-Type": "application/json"},

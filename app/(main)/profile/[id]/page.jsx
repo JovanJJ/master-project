@@ -40,8 +40,7 @@ export default async function ProfilePage({ params }) {
     const noImage = 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Placeholder_no_text.svg';
 
 
-    const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
-    const res = await fetch(`${baseUrl}/api/workers`);
+    const res = await fetch(`/api/workers`, { cache: 'no-store' });
     const { workers } = await res.json();
    
 

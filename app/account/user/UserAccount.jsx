@@ -11,8 +11,7 @@ export default async function UserAccount () {
     const session = await getServerSession(authOptions);
     const role = session?.user.role;
     const id = session?.user.id;
-    const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
-    const res = await fetch(`${baseUrl}/api/current-user?role=${role}&id=${id}`);
+    const res = await fetch(`/api/current-user?role=${role}&id=${id}`, { cache: 'no-store' });
     const data = await res.json();
     const profileImage = data.data.profileImage;
     

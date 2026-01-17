@@ -10,9 +10,18 @@ export default async function Navbar() {
   const role = session?.user.role;
   const id = session?.user.id;
 
-  const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
-  const res = await fetch(`${baseUrl}/api/current-user?role=${role}&id=${id}`);
-  const data = await res.json();
+  let data = null;
+  
+  if (role && id) {
+    try {
+      const res = await fetch(`/api/current-user?role=${role}&id=${id}`, { cache: 'no-store' });
+      if (res.ok) {
+        data = await res.json();
+      }
+    } catch (error) {
+      console.error('Failed to fetch user data:', error);
+    }
+  }
   
   return (
     data && 

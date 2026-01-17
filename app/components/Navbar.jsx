@@ -57,7 +57,6 @@ export default async function Navbar() {
         </Link>
         </div>
         <Link href={id && role ? "account" : "/login"} className="text-gray-600 hover:text-blue-600 px-3 py-2 font-medium ml-4 flex items-center gap-2">
-          
           {id && role ? "Nalog" : "Prijavi se"}
         </Link>
         <Link href="/register/worker" className="bg-blue-500 text-white px-4 h-2/3 py-2 rounded-md hover:bg-blue-700 ml-2 font-medium transition">

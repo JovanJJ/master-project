@@ -44,13 +44,22 @@ export default async function ProfilePage({ params }) {
     const protocol = headersList.get('x-forwarded-proto') || 'http';
     const baseUrl = `${protocol}://${host}`;
 
-    const res = await fetch(`${baseUrl}/api/workers`, { 
-      cache: 'no-store',
-      headers: {
-        'Cookie': headersList.get('cookie') || '',
+    let workers = [];
+    try {
+      const res = await fetch(`${baseUrl}/api/workers`, { 
+        cache: 'no-store',
+        headers: {
+          'Cookie': headersList.get('cookie') || '',
+        }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        workers = data.workers || [];
       }
-    });
-    const { workers } = await res.json();
+    } catch (error) {
+      console.error('Failed to fetch workers:', error);
+      workers = [];
+    }
    
 
 
@@ -62,9 +71,10 @@ export default async function ProfilePage({ params }) {
                         <div className="w-2/3 max-w-48 aspect-square rounded-full relative border-3 border-blue-200">
                             <Image
                                 src={profileImage === null ? noImage : profileImage}
-                                fill
+                                width={192}
+                                height={192}
                                 alt="Profile Image"
-                                className="w-full rounded-full object-cover"
+                                className="w-full h-full rounded-full object-cover"
                             />
                             <div className="absolute -bottom-6 -right-6 z-30 sm:-bottom-5 sm:-right-5 md:-bottom-1 md:-right-5 lg:bottom-1 lg:right-1">
                                 <Image src={Star} alt="star" className="w-[50px] h-[50px]" />

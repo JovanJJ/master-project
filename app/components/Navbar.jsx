@@ -37,7 +37,7 @@ export default async function Navbar() {
   }
   
   return (
-    <nav className="bg-white shadow-sm py-4 px-10 sticky top-0 z-100 h-[70px] flex items-center justify-between">
+    <nav className="bg-white shadow-sm py-4 px-10 sticky top-0 z-100 h-[70px] flex items-center justify-between relative">
       <div className='leftSection'>
         <Link href="/" className="text-2xl font-bold text-blue-500 sticky z-60">
           MasterHub
@@ -56,18 +56,15 @@ export default async function Navbar() {
           Kontakt
         </Link>
         </div>
-        <Link href={id && role ? "account" : "/login"} className="text-gray-600 hover:text-blue-600 px-3 py-2 font-medium ml-4 flex items-center gap-2">
+        <Link href={id && role ? "account" : "/login"} className="text-gray-600 hover:text-blue-600 px-3 py-2 font-medium ml-4">
           {id && role ? "Nalog" : "Prijavi se"}
         </Link>
         <Link href="/register/worker" className="bg-blue-500 text-white px-4 h-2/3 py-2 rounded-md hover:bg-blue-700 ml-2 font-medium transition">
           Registruj se
         </Link>
-        
-         
-
-        {role && id && <HeaderContainer profilePicture={profileImage} />}
       </div>
 
+      {role && id && <HeaderContainer profilePicture={profileImage} />}
       {<MobileMenu />}
 
 

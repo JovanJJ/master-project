@@ -1,6 +1,7 @@
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../lib/auth-config';
 import Link from 'next/link';
+import Image from 'next/image';
 import { headers } from 'next/headers';
 import HeaderContainer from "../components/ui/HeaderContainer";
 import MobileMenu from "../components/ui/MobileMenu";
@@ -10,8 +11,8 @@ export default async function Navbar() {
 
   const role = session?.user.role;
   const id = session?.user.id;
-
-  let data = null;
+  
+  let profileImage = null;
   
   if (role && id) {
     try {
@@ -27,15 +28,15 @@ export default async function Navbar() {
         }
       });
       if (res.ok) {
-        data = await res.json();
+        const data = await res.json();
+        profileImage = data?.data?.profileImage;
       }
     } catch (error) {
-      console.error('Failed to fetch user data:', error);
+      console.error('Failed to fetch profile image:', error);
     }
   }
   
   return (
-    data && 
     <nav className="bg-white shadow-sm py-4 px-10 sticky top-0 z-100 h-[70px] flex items-center justify-between">
       <div className='leftSection'>
         <Link href="/" className="text-2xl font-bold text-blue-500 sticky z-60">
@@ -55,8 +56,17 @@ export default async function Navbar() {
           Kontakt
         </Link>
         </div>
-        <Link href={id && role ? "account" : "/login"} className="text-gray-600 hover:text-blue-600 px-3 py-2 font-medium ml-4">
-          {id && role? "Nalog": "Prijavi se"}
+        <Link href={id && role ? "account" : "/login"} className="text-gray-600 hover:text-blue-600 px-3 py-2 font-medium ml-4 flex items-center gap-2">
+          {profileImage && id && role && (
+            <Image 
+              src={profileImage} 
+              alt="profile" 
+              width={32} 
+              height={32} 
+              className="rounded-full object-cover"
+            />
+          )}
+          {id && role ? "Nalog" : "Prijavi se"}
         </Link>
         <Link href="/register/worker" className="bg-blue-500 text-white px-4 h-2/3 py-2 rounded-md hover:bg-blue-700 ml-2 font-medium transition">
           Registruj se
@@ -64,7 +74,7 @@ export default async function Navbar() {
         
          
 
-        {role && id && <HeaderContainer profilePicture={data.data.profileImage} />}
+        {role && id && <HeaderContainer profilePicture={profileImage} />}
       </div>
 
       {<MobileMenu />}

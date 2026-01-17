@@ -13,7 +13,7 @@ import User from "../../../../lib/models/User";
 import { fetchWorkers } from "../../../../lib/actions/worker";
 import React, { Fragment } from 'react';
 import Link from "next/link";
-
+import Comments from "@/app/components/Comments";
 
 
 export default async function ProfilePage({ params }) {

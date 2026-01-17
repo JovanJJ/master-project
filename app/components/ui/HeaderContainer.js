@@ -9,8 +9,8 @@ export default function HeaderContainer({profilePicture}) {
     const [click, setClick] = useState(false);
     return (
         <>
-            <div onClick={() => setClick(prev => !prev)} className='w-[50px] h-[50px] rounded-full hover:ring-2 hover:ring-blue-400 absolute right-5  cursor-pointer'>
-                {profilePicture && <Image src={profilePicture} alt="img" fill className="w-full rounded-full" />}
+            <div onClick={() => setClick(prev => !prev)} className='w-[50px] h-[50px] rounded-full hover:ring-2 hover:ring-blue-400 absolute right-5  cursor-pointer relative'>
+                {profilePicture && <Image src={profilePicture} alt="img" width={50} height={50} className="w-full h-full rounded-full object-cover" />}
                 <div className="absolute w-3 h-3 bg-green-400 rounded-full bottom-1 right-0">
                 </div>
             </div>

@@ -5,12 +5,12 @@ import * as path from 'path';
 dotenv.config({ path: path.resolve('.env.local') });
 
 // Now import modules that use environment variables
-import { connectDB } from './lib/db.ts';
-import Worker from './lib/models/Worker.ts';
+import { connectDB } from './lib/db';
+import Worker from './lib/models/Worker';
 import mongoose from 'mongoose';
 
 // --- Utility function to generate a random number within a range ---
-const getRandom = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
+const getRandom = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
 // --- Data for generation ---
 const professions = ['Plumber', 'Electrician', 'Programer', 'Handyman', 'Carpenter', 'Tutor'];

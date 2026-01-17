@@ -4,7 +4,7 @@ import Star from "../../../../public/stars.avif";
 import { fetchWorkerById } from "../../../../lib/actions/worker";
 import { addComments } from "../../../../lib/actions/worker";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../../api/auth/[...nextauth]/route";
+import { authOptions } from "../../../lib/auth-config";
 import { redirect } from "next/navigation";
 import { notFound } from 'next/navigation';
 import Comments from "../../../components/Comments";

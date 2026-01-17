@@ -1,5 +1,5 @@
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../api/auth/[...nextauth]/route';
+import { authOptions } from '../lib/auth-config';
 import Link from 'next/link';
 import HeaderContainer from "../components/ui/HeaderContainer";
 import MobileMenu from "../components/ui/MobileMenu";

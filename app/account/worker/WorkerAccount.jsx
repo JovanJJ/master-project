@@ -2,7 +2,7 @@ import Image from "next/image";
 import Star from "../../../public/stars.avif";
 import Link from "next/link";
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../../api/auth/[...nextauth]/route';
+import { authOptions } from '../../lib/auth-config';
 
 const noImage = 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Placeholder_no_text.svg';
 const profileImage = "https://upload.wikimedia.org/wikipedia/commons/a/ad/Placeholder_no_text.svg"

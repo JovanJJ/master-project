@@ -7,12 +7,24 @@ import ToggleButton from "../worker/components/ToggleButton";
 import FingerPointer from "../../../public/finger-pointer.svg";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../lib/auth-config";
+import { headers } from 'next/headers';
 import fetchUser from "../../../lib/fetchers/fetch";
+
 export default async function UserSettings(){
     const session = await getServerSession(authOptions);
     const userId = session.user.id;
 
-    const res = await fetch(`/api/user/settings?id=${userId}`, { cache: 'no-store' });
+    const headersList = await headers();
+    const host = headersList.get('host') || 'localhost:3000';
+    const protocol = headersList.get('x-forwarded-proto') || 'http';
+    const baseUrl = `${protocol}://${host}`;
+
+    const res = await fetch(`${baseUrl}/api/user/settings?id=${userId}`, { 
+      cache: 'no-store',
+      headers: {
+        'Cookie': headersList.get('cookie') || '',
+      }
+    });
     const data = await res.json();
     console.log(data);
     

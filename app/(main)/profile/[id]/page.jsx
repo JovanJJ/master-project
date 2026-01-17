@@ -7,7 +7,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../../../lib/auth-config";
 import { redirect } from "next/navigation";
 import { notFound } from 'next/navigation';
-import Comments from "../../../components/Comments";
+import { headers } from 'next/headers';
 import { fetchComments } from "../../../../lib/actions/worker";
 import User from "../../../../lib/models/User";
 import { fetchWorkers } from "../../../../lib/actions/worker";
@@ -39,8 +39,17 @@ export default async function ProfilePage({ params }) {
 
     const noImage = 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Placeholder_no_text.svg';
 
+    const headersList = await headers();
+    const host = headersList.get('host') || 'localhost:3000';
+    const protocol = headersList.get('x-forwarded-proto') || 'http';
+    const baseUrl = `${protocol}://${host}`;
 
-    const res = await fetch(`/api/workers`, { cache: 'no-store' });
+    const res = await fetch(`${baseUrl}/api/workers`, { 
+      cache: 'no-store',
+      headers: {
+        'Cookie': headersList.get('cookie') || '',
+      }
+    });
     const { workers } = await res.json();
    
 

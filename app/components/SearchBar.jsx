@@ -10,7 +10,7 @@ export default function SearchBar() {
   const [profession, setProfession] = useState('Programer');
   const [location, setLocation] = useState('Jagodina');
   const [search, setSearch] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const page = '1';
 
   const params = new URLSearchParams();

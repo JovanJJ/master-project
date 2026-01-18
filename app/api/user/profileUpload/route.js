@@ -38,6 +38,7 @@ export async function POST(req) {
         return NextResponse.json({ success: true, data: data});
         
     } catch (error) {
-        return NextResponse.json({error});
+        console.error('Profile upload error:', error);
+        return NextResponse.json({success: false, message: error.message || 'Upload failed'}, {status: 500});
     } 
 }

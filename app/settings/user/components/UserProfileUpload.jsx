@@ -1,12 +1,12 @@
 'use client';
 
 import { useState, useRef, useEffect } from "react";
-import  {uploadProfileImage} from "../../../../lib/actions/worker";
+import { uploadProfileImage } from "../../../../lib/actions/worker";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-export default function UserProfileUpload({profileImage, userId}) {
+export default function UserProfileUpload({ profileImage, userId }) {
     const [selectedImage, setSelectedImage] = useState(null);
     const [previewUrl, setPreviewUrl] = useState();
     const [success, setSuccess] = useState(false);
@@ -15,14 +15,14 @@ export default function UserProfileUpload({profileImage, userId}) {
     const fileInputRef = useRef(null);
     const { update } = useSession();
     const router = useRouter();
-    
-    
-    
 
-    
-    
+
+    console.log(userId);
+
+
+
     const userImage = profileImage;
-    
+
 
 
     const handleImageChange = (e) => {
@@ -36,9 +36,9 @@ export default function UserProfileUpload({profileImage, userId}) {
 
             setSelectedImage(file);
 
-            const reader = new FileReader() 
-            reader.readAsDataURL(file)  
-            reader.onloadend = () => {  
+            const reader = new FileReader()
+            reader.readAsDataURL(file)
+            reader.onloadend = () => {
                 setPreviewUrl(reader.result)
             }
         }
@@ -58,40 +58,40 @@ export default function UserProfileUpload({profileImage, userId}) {
         }
 
         setError(null)
-        
+
 
         try {
-            
+
             const formData = new FormData()
             formData.append('profilePicture', selectedImage)
             formData.append('userId', userId)
-            
-            
-            const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
-            const res = await fetch(`${baseUrl}/api/user/profileUpload`,
+
+            const res = await fetch(`/api/user/profileUpload`,
                 {
                     method: "POST",
                     body: formData,
                 }
             );
-            
-            const result = await res.json();
-            setSuccess(true);
-            
-            if (!result.data.success) {
-                throw new Error(result.message)
+
+            if (!res.ok) {
+                throw new Error(`Upload failed with status ${res.status}`);
             }
 
-            
-            
-            setSelectedImage(null);
-            setPreviewUrl(result.data.image);
+            const result = await res.json();
 
-            
+            if (!result.success) {
+                throw new Error(result.message || 'Upload failed')
+            }
+
+            setSuccess(true);
+            setSelectedImage(null);
+            setPreviewUrl(result.data.profileImage);
+
+
         } catch (err) {
             setError(err.message);
         }
-router.refresh();
+        router.refresh();
     }
 
     return (

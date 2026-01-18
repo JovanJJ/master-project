@@ -5,6 +5,7 @@ import globe from '../../../public/globe.svg';
 import { fetchWorkers } from '../../../lib/actions/worker'; 
 import Link from "next/link";
 import Pagination from "../../components/ui/Pagination";
+import ProfileLinkLoading from "../../components/ProfileLinkLoading";
 
 
 
@@ -49,9 +50,7 @@ export default async function SearchPage({ searchParams }) {
                                 <span className="ml-2 text-sm text-gray-600">(128)</span>
                             </div>
 
-                            <Link href={`/profile/${worker._id}`} className="mt-auto bg-[#0077b6] text-white py-2 rounded-lg text-center hover:bg-[#48cae4] transition">
-                                Pogledaj profil
-                            </Link>
+                            <ProfileLinkLoading workerId={worker._id} />
                         </div>
                     </div>
                 );

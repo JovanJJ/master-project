@@ -26,9 +26,7 @@ export default function Hero() {
           <TypeWriterComponent />
         </h1>
 
-        <a href="#categories" className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition md:hidden">
-          Explore Categories
-        </a>
+        
       </div>
     </section>
   );

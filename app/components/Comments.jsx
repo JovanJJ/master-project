@@ -1,3 +1,5 @@
+"use client";
+
 import Globe from "../../public/JJ.jpg";
 import Image from "next/image";
 import React from "react";

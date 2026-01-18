@@ -35,7 +35,6 @@ export default async function ProfilePage({ params }) {
     const { _id, firstName, lastName, profession, location, birthYear, email, phone, profileImage, description } = workerData;
 
     const comments = await fetchComments(_id);
-    console.log(comments);
 
     const noImage = 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Placeholder_no_text.svg';
 
@@ -64,7 +63,9 @@ export default async function ProfilePage({ params }) {
 
 
     return (
+
         <section className="w-full pt-15 pb-30">
+        
             <div className="mx-auto max-w-[1100px] flex flex-col xl:flex-row gap-7 mt-[30px]">
                 <div className="mx-auto w-full p-3 rounded-3xl shadow-2xl">
                     <div className="w-full flex justify-center sm:justify-start pt-7">
@@ -196,6 +197,8 @@ export default async function ProfilePage({ params }) {
                     })}
                 </aside>
             </div>
+           
         </section>
+        
     );
 }

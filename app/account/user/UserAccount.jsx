@@ -16,7 +16,7 @@ export default async function UserAccount() {
     const protocol = headersList.get('x-forwarded-proto') || 'http';
     const baseUrl = `${protocol}://${host}`;
 
-    const data = null;
+    let data = null;
     if (role && id) {
         const res = await fetch(`${baseUrl}/api/current-user?role=${role}&id=${id}`, {
             cache: 'no-store',

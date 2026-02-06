@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import TypeWriterComponent from './ui/TypeWriter';
-import heroImage from "../../public/Generated.png";
+import heroImage from "../../public/hero-3.png";
 
 export default function Hero() {
   return (

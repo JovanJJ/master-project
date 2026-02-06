@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { headers } from 'next/headers';
 import HeaderContainer from "../components/ui/HeaderContainer";
 import MobileMenu from "../components/ui/MobileMenu";
+import Languages from './Languages';
 
 export default async function Navbar() {
   const session = await getServerSession(authOptions);
@@ -66,10 +67,13 @@ export default async function Navbar() {
         </div>
       </div>
 
-      <div>{role && id && <HeaderContainer profilePicture={profileImage} />}</div>
+      <div className='flex h-full'>
+        <Languages />
+        {role && id && <HeaderContainer profilePicture={profileImage} />}
+      </div>
 
       {<MobileMenu />}
-
+      
 
     </nav>
 

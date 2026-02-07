@@ -8,8 +8,6 @@ export default function WorkerAccountHtml({ lang, data, profileImage }) {
     return (
         <section className="w-full flex justify-center pb-15 pt-7">
             <div className="mx-auto max-w-[1200px] flex flex-col xl:flex-row gap-7 mt-[30px] w-full px-4">
-
-
                 <div className="mx-auto w-full max-w-[1000px] p-6 rounded-3xl shadow-2xl bg-blue-50">
                     <h1 className="text-3xl pb-3">{lang === 'en' ? 'Account' : 'Nalog'}</h1>
                     <Link href={`/${lang}/settings`}>{lang === 'en' ? 'Click' : 'Klikni'} <span className="underline">{lang === 'en' ? 'Here' : 'Ovde'}</span> {lang === 'en' ? 'for account settings' : 'za podešavanje naloga'}</Link>

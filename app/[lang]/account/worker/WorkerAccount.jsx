@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Star from "../../../../public/stars.avif";
+
 import Link from "next/link";
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../../../lib/auth-config';
@@ -29,6 +29,7 @@ export default async function WorkerAccount({ lang }) {
     const profileImage = data.data.profileImage;
 
     return (
+        data && lang && profileImage &&
         <WorkerAccountHtml lang={lang} data={data} profileImage={profileImage} />
     );
 }

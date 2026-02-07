@@ -6,16 +6,15 @@ import Image from "next/image";
 import Link from "next/link";
 import LogOut from "../LogOut";
 import { useParams } from "next/navigation";
+import noImage from "../../../../public/noImage.svg";
 
 export default function HeaderContainer({ profilePicture }) {
-
     const [click, setClick] = useState(false);
-    const noImage = "https://www.unhcr.org/innovation/innovation-fellow-profile-edward-benson/";
     const { lang } = useParams();
     return (
         <>
-            <div onClick={() => setClick(prev => !prev)} className='hidden  w-[50px] h-[50px]  rounded-full hover:ring-2 hover:ring-blue-400 right-5 ml-[100px] cursor-pointer relative lg:flex justify-center items-center'>
-                {profilePicture && <Image src={profilePicture ? profilePicture : noImage} alt="img" width={50} height={50} className=" rounded-full object-cover" />}
+            <div onClick={() => setClick(prev => !prev)} className='hidden  w-[50px] h-[50px]  rounded-full hover:ring-2 hover:ring-blue-400 right-5 ml-[100px] cursor-pointer relative lg:flex justify-center items-center border border-blue-200'>
+                <Image src={profilePicture?.startsWith("http") ? profilePicture : noImage} alt="img" width={50} height={50} className=" rounded-full object-cover" />
                 <div className="absolute w-3 h-3 bg-green-400 rounded-full bottom-1 right-0">
                 </div>
             </div>

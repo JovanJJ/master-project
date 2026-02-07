@@ -37,7 +37,7 @@ export default async function UserSettings({ lang }) {
     return (
         <section className="flex justify-center w-full  px-4">
             <div className="flex flex-col w-full md:max-w-3xl p-4 border border-blue-200 rounded-xl">
-                <div className="flex w-22 justify-between text-2xl">{lang === 'en' ? 'Account' : 'Nalog'} <Image src={userProfile} alt="image"
+                <div className="flex w-22 justify-between gap-2 text-2xl">{lang === 'en' ? 'Account' : 'Nalog'} <Image src={userProfile} alt="image"
                     className="w-5 h-6 mt-1" />
                 </div>
                 <div>

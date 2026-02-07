@@ -29,7 +29,6 @@ export default async function WorkerAccount({ lang }) {
     const profileImage = data.data.profileImage;
 
     return (
-        data && lang && profileImage &&
-        <WorkerAccountHtml lang={lang} data={data} profileImage={profileImage} />
+        data && lang && < WorkerAccountHtml lang={lang} data={data} />
     );
 }

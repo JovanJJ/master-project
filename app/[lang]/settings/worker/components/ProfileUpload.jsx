@@ -32,9 +32,9 @@ export default function ProfileUpload({ profileData, lang }) {
 
             setSelectedImage(file);
 
-            const reader = new FileReader() 
-            reader.readAsDataURL(file)  
-            reader.onloadend = () => {  
+            const reader = new FileReader()
+            reader.readAsDataURL(file)
+            reader.onloadend = () => {
                 setPreviewUrl(reader.result)
             }
         }
@@ -61,22 +61,22 @@ export default function ProfileUpload({ profileData, lang }) {
         setSuccess(false)
 
         try {
-            
+
             const formData = new FormData()
             formData.append('profilePicture', selectedImage)
             formData.append('workerId', workerId)
 
-           
+
             const result = await uploadProfileImage(formData)
 
             if (!result.success) {
                 throw new Error(result.message)
             }
 
-            
+
             setSuccess(true)
             setSelectedImage(null)
-            setPreviewUrl(result.imageUrl) 
+            setPreviewUrl(result.imageUrl)
 
 
         } catch (err) {
@@ -109,7 +109,7 @@ export default function ProfileUpload({ profileData, lang }) {
             }
 
             {selectedImage ? (
-                <button type="submit" className="block px-3 py-2 bg-blue-500 rounded-3xl text-white w-fit mx-auto pointer hover:bg-blue-600 transition">{lang === 'en' ? 'Add Image' : 'Dodaj sliku'}</button>
+                <button type="submit" className="block px-3 py-2 bg-blue-500 rounded-3xl text-white w-fit mx-auto pointer hover:bg-blue-600 transition active:bg-blue-100 cursor-pointer">{lang === 'en' ? 'Add Image' : 'Dodaj sliku'}</button>
             ) : (
                 <button type="submit" disabled={!selectedImage} className="block px-3 py-2 bg-gray-300 rounded-3xl w-fit mx-auto">{lang === 'en' ? 'Add Image' : 'Dodaj sliku'}</button>
             )

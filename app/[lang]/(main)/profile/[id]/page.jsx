@@ -65,21 +65,23 @@ export default async function ProfilePage({ params }) {
 
 
     return (
-
         <section className="w-full pt-15 pb-30">
 
             <div className="mx-auto max-w-[1100px] flex flex-col xl:flex-row gap-7 mt-[30px]">
                 <div className="mx-auto w-full p-3 rounded-3xl shadow-2xl">
                     <div className="w-full flex justify-center sm:justify-start pt-7">
-                        <div className="pt-5 relative w-2/3 max-w-48 aspect-square rounded-full relative border-3 border-blue-200">
-                            <Image
-                                src={profileImage === null ? noImage : profileImage}
+                        <div className="w-2/3 max-w-48 aspect-square relative">
+                            <div className="w-full h-full rounded-full overflow-hidden relative">
+                                <Image
+                                    src={profileImage === null ? noImage : profileImage}
+                                    fill
+                                    alt="Profile Image"
+                                    className="rounded-full object-cover"
+                                />
+                                <div className="absolute inset-0 rounded-full border-3 border-blue-200 pointer-events-none"></div>
+                            </div>
 
-                                alt="Profile Image"
-                                className=" rounded-full object-cover"
-                                fill
-                            />
-                            <div className="absolute -bottom-6 -right-6 z-30 ">
+                            <div className="absolute -bottom-6 -right-6 z-30 sm:-bottom-5 sm:-right-5 md:-bottom-1 md:-right-5 lg:bottom-1 lg:right-1">
                                 <Image src={Star} alt="star" className="w-[50px] h-[50px]" />
                             </div>
                         </div>

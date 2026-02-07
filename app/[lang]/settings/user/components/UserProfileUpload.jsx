@@ -118,9 +118,9 @@ export default function UserProfileUpload({ profileImage, userId, lang }) {
             }
 
             {selectedImage ? (
-                <button type="submit" className="block px-3 py-2 bg-blue-500 rounded-3xl text-white w-fit mx-auto pointer hover:bg-blue-600 transition">{lang === 'en' ? 'Add Image' : 'Dodaj sliku'}</button>
+                <button type="submit" className="block px-3 py-2 bg-blue-500 rounded-3xl text-white w-fit mx-auto cursor-pointer active:bg-blue-200 hover:bg-blue-600 transition">{lang === 'en' ? 'Add Image' : 'Dodaj sliku'}</button>
             ) : (
-                <button type="submit" disabled={!selectedImage} className="block px-3 py-2 bg-gray-300 rounded-3xl w-fit mx-auto">{lang === 'en' ? 'Add Image' : 'Dodaj sliku'}</button>
+                <button type="submit" disabled={!selectedImage} className="block px-3 py-2 bg-gray-300 rounded-3xl w-fit mx-auto cursor-pointer">{lang === 'en' ? 'Add Image' : 'Dodaj sliku'}</button>
             )
             }
 

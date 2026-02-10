@@ -26,7 +26,7 @@ export default function WorkerAccountHtml({ lang, data }) {
                                 <div className="absolute inset-0 rounded-full border-3 border-blue-200 pointer-events-none"></div>
                             </div>
 
-                            <div className="absolute z-50 w-[50px] h-[50px] bottom-10 right-10 sm:-bottom-5 sm:-right-5 md:-bottom-1 md:-right-5 lg:bottom-1 lg:right-1">
+                            <div className="absolute z-50 w-[50px] h-[50px] bottom-0 right-0 sm:-bottom-5 sm:-right-5 md:-bottom-1 md:-right-5 lg:bottom-1 lg:right-1">
                                 <Image src={Star} fill alt="star" className="w-full h-full" />
                             </div>
                         </div>

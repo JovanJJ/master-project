@@ -20,7 +20,7 @@ export default function Languages() {
     };
 
     return (
-        <div className='relative h-full flex justify-center text-xs items-center gap-2'>
+        <div className='relative h-full flex justify-center text-xs items-center gap-2 mr-5'>
             <div><Image src={globe} width={27} height={27} alt="globe-image" /></div>
             <div
                 onClick={() => switchLanguage('en')}

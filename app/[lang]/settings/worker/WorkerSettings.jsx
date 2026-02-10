@@ -11,6 +11,7 @@ import { redirect } from "next/navigation"
 import { fetchWorkerById } from "../../../../lib/actions/worker";
 import Notifications from './components/Notifications';
 import blueRightArrow from "../../../../public/arrow-right-1.svg";
+import blueLeftArrow from "../../../../public/left-arrow.svg";
 
 export default function Settings({ lang }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -46,18 +47,16 @@ export default function Settings({ lang }) {
       <div className="w-[900px] mx-auto p-4 md:p-7 md:border md:border-blue-200 rounded-2xl shadow-xl grid grid-cols-1 md:grid-cols-[31%_1fr]">
 
         <div className={`
-        fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl
+        fixed inset-y-0 left-0 z-40 w-64 bg-white shadow-xl
         transform transition-transform duration-300
         ${menuOpen ? "translate-x-0" : "-translate-x-full"}
         md:relative md:translate-x-0 md:w-auto md:shadow-none
-        md:border-r border-blue-200
+        border-r border-blue-200
        `}>
-          <button
-            onClick={() => setMenuOpen(false)}
-            className="md:hidden absolute top-4 right-4 text-xl"
-          >
-            ✕
-          </button>
+        
+         <div className={`absolute right-2 top-50 z-30 ${!menuOpen && "hidden"}`}>
+            <Image onClick={() => setMenuOpen(false)} src={blueLeftArrow} alt='close' width={26} height={26} />
+            </div>
 
           <div className="font-bold p-4 pt-6 flex justify-center items-center pb-6">
             {lang === 'en' ? 'Settings' : 'Podešavanja'}

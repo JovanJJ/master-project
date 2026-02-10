@@ -46,15 +46,15 @@ export default async function Navbar({ lang }) {
   const register = lang === 'en' ? 'Register' : 'Registruj se';
 
   return (
-    <nav className="bg-white shadow-sm px-5 sticky top-0 z-100 h-[70px] flex items-center justify-between">
-      <div className='leftSection lg:w-[279px]'>
+    <nav className="bg-white shadow-sm px-5 sticky top-0 z-100 h-[57px] flex items-center justify-between">
+      <div className='leftSection lg:w-[200px]'>
         <Link href="/" className="text-2xl font-bold text-blue-500 sticky z-60">
           MasterHub
         </Link>
       </div>
 
-      <div className='hidden md:flex items-center  '>
-        <div className='hidden md:flex px-4 border-r'>
+      <div className='hidden lg:flex items-center  '>
+        <div className='hidden lg:flex px-4 border-r'>
           <NavLink href="/" children={home} />
           <NavLink href="/about" children={about} />
           <NavLink href="/contact" children={contact} />

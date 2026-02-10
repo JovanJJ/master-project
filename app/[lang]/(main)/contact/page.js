@@ -1,3 +1,8 @@
+export const metadata = {
+  title: "Contact Us – Get in Touch with Our Team",
+  description: "Have questions or need support? Reach out to our team and get help with hiring, accounts, or platform features.",
+};
+
 export default async function ContactPage({ params }) {
   const { lang } = await params;
 

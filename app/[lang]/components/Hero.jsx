@@ -21,12 +21,12 @@ export default function Hero({ lang }) {
 
 
       <div className="relative z-10 text-center text-white px-4 max-w-3xl mx-auto mt-[-4rem]">
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight mb-6">
-          MasterHub:
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight ">
+          MasterHub  
+        </h1> 
+        <h2 className='text-xl font-bold sm:text-2xl lg:text-3xl'>
           <TypeWriterComponent lang={lang} />
-        </h1>
-
-
+        </h2>
       </div>
     </section>
   );

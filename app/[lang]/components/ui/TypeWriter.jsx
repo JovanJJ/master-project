@@ -7,10 +7,9 @@ export default function TypeWriterComponent({ lang }) {
     <Typewriter
       options={{
         strings: lang === 'en' ? [
-          "Connection between jobs and professionals",
           "The right people for the right job",
-          "New jobs, every day",
-          "Your skill, your opportunity"
+          "Your skill, your opportunity",
+          "Connect. Work. Grow."
         ] : ['Veza između posla i majstora', 'Pravi ljudi za pravi posao', 'Novi poslovi, svaki dan', "Vaš zanat, vaša prilika"],
         autoStart: true,
         loop: true,

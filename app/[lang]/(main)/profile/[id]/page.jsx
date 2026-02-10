@@ -1,3 +1,8 @@
+export const metadata = {
+  title: "About Us – Connecting Talent with Opportunity",
+  description: "Learn how our platform helps workers showcase their skills and clients hire trusted professionals. Discover our mission and values.",
+};
+
 import Image from "next/image";
 import Globe from "../../../../../public/JJ.jpg";
 import Star from "../../../../../public/stars.avif";

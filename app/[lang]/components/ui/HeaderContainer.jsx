@@ -13,8 +13,8 @@ export default function HeaderContainer({ profilePicture }) {
     const { lang } = useParams();
     return (
         <>
-            <div onClick={() => setClick(prev => !prev)} className='hidden  w-[50px] h-[50px]  rounded-full hover:ring-2 hover:ring-blue-400 right-5 ml-[100px] cursor-pointer relative lg:flex justify-center items-center border border-blue-200'>
-                <Image src={profilePicture?.startsWith("http") ? profilePicture : noImage} alt="img" width={50} height={50} className=" rounded-full object-cover" />
+            <div onClick={() => setClick(prev => !prev)} className='hidden  w-[50px] h-[50px]  rounded-full hover:ring-2 hover:ring-blue-400  cursor-pointer relative lg:flex justify-center items-center border border-blue-200'>
+                <Image src={profilePicture?.startsWith("http") ? profilePicture : noImage} alt="img" width={50} height={50} className="rounded-full object-cover" />
                 <div className="absolute w-3 h-3 bg-green-400 rounded-full bottom-1 right-0">
                 </div>
             </div>
@@ -31,7 +31,7 @@ export default function HeaderContainer({ profilePicture }) {
                         }
   `}
                 >
-                    <Link href={"settings"} className="text-gray-700 hover:text-gray-950">
+                    <Link href={`/${lang}/settings`} className="text-gray-700 hover:text-gray-950">
                         {lang === 'en' ? 'Settings / Profile' : 'Podešavanja / Profil'}
                     </Link>
                     <div onClick={LogOut} className="text-gray-700 flex justify-between w-2/3 cursor-pointer hover:text-gray-950">
